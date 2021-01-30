@@ -16,4 +16,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+	public static final String SBTabDriverDisplay = "Driver";
+	public static final int shooterColumn = 1;
 }

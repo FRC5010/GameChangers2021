@@ -28,11 +28,13 @@ public class HopperOmniSubsystem extends SubsystemBase {
   }
   public void SetOmniSpeed(){
     double currSpeed = driver.getRawAxis(1) * .5;
-    HOmniMotor.set(currSpeed);
+    
     if(Math.abs(currSpeed) < .02){
       hopperMotor.set(0);
+      HOmniMotor.set(0);
     }else{
-      hopperMotor.set(0.25);
+      HOmniMotor.set(-.8);
+      hopperMotor.set(0.05);
     }
   }
 

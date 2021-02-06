@@ -9,36 +9,41 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.FlyWheelSubsystem;
+import frc.robot.ControlConstants;
+import frc.robot.mechanisms.Drive;
+import frc.robot.subsystems.DriveTrainMain;
 
-public class ShootBall extends CommandBase {
+public class Driving extends CommandBase {
+  DriveTrainMain driveSubsystem;
+  Joystick driver;
   /**
-   * Creates a new ShootBall.
+   * Creates a new Driving.
    */
-  public FlyWheelSubsystem flyWheelSubsystem;
-  Joystick joystick;
-  public ShootBall(FlyWheelSubsystem flyWheelSubsystem, Joystick joystick) {
+  public Driving(DriveTrainMain driveTrain, Joystick driver) {
+    driveSubsystem = driveTrain;
+    this.driver = driver;
     // Use addRequirements() here to declare subsystem dependencies.
-    this.joystick = joystick;
-    this.flyWheelSubsystem = flyWheelSubsystem;
-    addRequirements(this.flyWheelSubsystem);
+    addRequirements(driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Drive.setCurrentLimits(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flyWheelSubsystem.spinUpWheel(.1);
+    driveSubsystem.arcadeDrive(
+      driveSubsystem.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)), 
+      driveSubsystem.scaleInputs(driver.getRawAxis(ControlConstants.steer)));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    flyWheelSubsystem.end();
+    Drive.setCurrentLimits(ControlConstants.driveTrainCurrentLimit);
   }
 
   // Returns true when the command should end.

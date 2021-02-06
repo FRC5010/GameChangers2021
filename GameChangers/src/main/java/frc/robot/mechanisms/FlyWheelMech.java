@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.FlyWheelSubsystem;
+import frc.robot.subsystems.HopperOmniSubsystem;
 
 /**
  * Add your docs here.
@@ -23,6 +24,15 @@ public class FlyWheelMech {
     public CANSparkMax m1;
     public CANSparkMax m2;
     public CANSparkMax hood;
+    public CANSparkMax hopperMotor;
+    public CANSparkMax HOmniMotor;
+
+    public FlyWheelSubsystem flyWheelSubsystem;
+    public HopperOmniSubsystem hopperOmniSubsystem;
+
+    private void configurebuttonBindings(){
+
+    }
 
     public FlyWheelMech(Joystick driver){
         m1 = new CANSparkMax(6,MotorType.kBrushless);
@@ -32,9 +42,13 @@ public class FlyWheelMech {
         m2.setInverted(true);
         m1.setSmartCurrentLimit(40);
 
+        hopperMotor = new CANSparkMax(10, MotorType.kBrushless);
+        HOmniMotor = new CANSparkMax(5, MotorType.kBrushless);
+
         hood = new CANSparkMax(8,MotorType.kBrushless);
 
-        FlyWheelSubsystem flyWheelSubsystem = new FlyWheelSubsystem(m1, hood);
-        flyWheelSubsystem.setDefaultCommand(new ShootBall(flyWheelSubsystem, driver));
+        flyWheelSubsystem = new FlyWheelSubsystem(m1, hood);
+        hopperOmniSubsystem = new HopperOmniSubsystem(HOmniMotor, driver,hopperMotor);
+        
     }
 }

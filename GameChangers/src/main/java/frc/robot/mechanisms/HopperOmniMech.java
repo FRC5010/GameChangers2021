@@ -27,9 +27,8 @@ public class HopperOmniMech {
     }
     private void init(Joystick driver){
         //this.driver = driver;
-        hopperMotor = new CANSparkMax(10, MotorType.kBrushless);
-        HOmniMotor = new CANSparkMax(5, MotorType.kBrushless);
-        hopperOmniSubsystem = new HopperOmniSubsystem(HOmniMotor, driver,hopperMotor);
+        
+        
         
     }
 }

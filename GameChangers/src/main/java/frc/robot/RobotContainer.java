@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HopperOmni;
+import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.FlyWheelMech;
 import frc.robot.mechanisms.HopperOmniMech;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -32,6 +33,7 @@ public class RobotContainer {
   private Joystick driver;
   private HopperOmniMech hOmniMech;
   private HopperOmni hOmni;
+  private Drive drive;
 
   private FlyWheelMech flyWheelMech;
 
@@ -41,6 +43,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     driver = new Joystick(0);
+
+    drive = new Drive(driver);
     hOmniMech = new HopperOmniMech(driver);
     flyWheelMech = new FlyWheelMech(driver);
     configureButtonBindings();

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.ShooterConstants;
 
 public class FlyWheelSubsystem extends SubsystemBase {
   /**
@@ -26,11 +28,16 @@ public class FlyWheelSubsystem extends SubsystemBase {
   public CANSparkMax motor;
   public CANSparkMax hood;
   private CANPIDController pidController;
+  private Boolean readyToShoot;
 
   public FlyWheelSubsystem(CANSparkMax m1, CANSparkMax hood) {
     motor = m1;
     this.hood = hood;
     pidController = motor.getPIDController();
+
+    pidController.setP(ShooterConstants.kP);
+    pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
+
     ShuffleboardLayout layout = Shuffleboard.getTab(Constants.SBTabDriverDisplay)
       .getLayout("Shooter", BuiltInLayouts.kList).withPosition(Constants.shooterColumn, 1).withSize(2,5);
     layout.addNumber("Velocity", motor.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
@@ -39,8 +46,22 @@ public class FlyWheelSubsystem extends SubsystemBase {
       .withProperties(Map.of("Max", 6000)).withPosition(Constants.shooterColumn, 1);
   }
 
-  public void spinUpWheel(double d){
-    motor.set(1 * d);
+  public void spinUpWheel(double setPoint){
+    pidController.setFF(ShooterConstants.kS / setPoint + ShooterConstants.kV);
+    pidController.setReference(setPoint, ControlType.kVelocity);
+
+    if(Math.abs(motor.getEncoder().getVelocity() - setPoint) < 75){
+      readyToShoot = true;
+    } else {
+      readyToShoot = false;
+    }
+  }
+  
+  public void setWheelSpeed(double setPoint){
+    motor.set(-setPoint);
+  }
+  public boolean getReadyToShoot(){
+    return readyToShoot;
   }
 
   public void end(){
@@ -53,5 +74,6 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
   }
 }

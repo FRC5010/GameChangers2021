@@ -10,18 +10,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FlyWheelSubsystem;
+import frc.robot.subsystems.HopperOmniSubsystem;
 
 public class ShootBall extends CommandBase {
   /**
    * Creates a new ShootBall.
    */
   public FlyWheelSubsystem flyWheelSubsystem;
-  Joystick joystick;
-  public ShootBall(FlyWheelSubsystem flyWheelSubsystem, Joystick joystick) {
+  private HopperOmniSubsystem hopperOmniSubsystem;
+  public ShootBall(FlyWheelSubsystem flyWheelSubsystem, HopperOmniSubsystem hopperOmniSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.joystick = joystick;
+    this.hopperOmniSubsystem = hopperOmniSubsystem;
     this.flyWheelSubsystem = flyWheelSubsystem;
-    addRequirements(this.flyWheelSubsystem);
+    addRequirements(this.flyWheelSubsystem, this.hopperOmniSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -33,6 +34,8 @@ public class ShootBall extends CommandBase {
   @Override
   public void execute() {
     flyWheelSubsystem.spinUpWheel(.1);
+    hopperOmniSubsystem.SetOmniSpeed(.8);
+    hopperOmniSubsystem.SetHopperSpeed(.1);
   }
 
   // Called once the command ends or is interrupted.

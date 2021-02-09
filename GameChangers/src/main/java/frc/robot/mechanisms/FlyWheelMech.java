@@ -13,7 +13,13 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.ControlConstants;
+import frc.robot.commands.HopperOmni;
 import frc.robot.commands.ShootBall;
+import frc.robot.commands.ToggleHoodDown;
+import frc.robot.commands.ToggleHoodUp;
+import frc.robot.commands.auto.FlyWheelDefault;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
 
@@ -29,12 +35,23 @@ public class FlyWheelMech {
 
     public FlyWheelSubsystem flyWheelSubsystem;
     public HopperOmniSubsystem hopperOmniSubsystem;
+    private Joystick operator;
+    private JoystickButton hoodUp;
+    private JoystickButton hoodDown;
+    private JoystickButton launch;
 
     private void configurebuttonBindings(){
+        hoodUp = new JoystickButton(operator, ControlConstants.hoodUp);
+        hoodDown = new JoystickButton(operator, ControlConstants.hoodDown);
+        launch = new JoystickButton(operator, ControlConstants.launchButton);
 
+        hoodUp.whileHeld(new ToggleHoodUp(flyWheelSubsystem));
+        hoodDown.whileHeld(new ToggleHoodDown(flyWheelSubsystem));
+        launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem));
     }
 
-    public FlyWheelMech(Joystick driver){
+    public FlyWheelMech(Joystick operator){
+        this.operator = operator;
         m1 = new CANSparkMax(6,MotorType.kBrushless);
         m2 = new CANSparkMax(7,MotorType.kBrushless);
         m1.setInverted(false);
@@ -48,7 +65,9 @@ public class FlyWheelMech {
         hood = new CANSparkMax(8,MotorType.kBrushless);
 
         flyWheelSubsystem = new FlyWheelSubsystem(m1, hood);
-        hopperOmniSubsystem = new HopperOmniSubsystem(HOmniMotor, driver,hopperMotor);
-        
+        flyWheelSubsystem.setDefaultCommand(new FlyWheelDefault(operator, flyWheelSubsystem));
+        hopperOmniSubsystem = new HopperOmniSubsystem(HOmniMotor, hopperMotor);
+        hopperOmniSubsystem.setDefaultCommand(new HopperOmni(hopperOmniSubsystem, operator));
+        configurebuttonBindings();
     }
 }

@@ -9,18 +9,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.mechanisms.HopperOmniMech;
 import frc.robot.subsystems.HopperOmniSubsystem;
 
 public class HopperOmni extends CommandBase {
   public HopperOmniSubsystem hopperOmniSubsystem;
-  public Joystick driver;
-  public HopperOmniMech hOmniMech;
+  private Joystick operator;
+
   /**
    * Creates a new HopperOmni.
    */
-  public HopperOmni(HopperOmniSubsystem hopperOmniSubsystem) {
-
+  public HopperOmni(HopperOmniSubsystem hopperOmniSubsystem, Joystick operator) {
+    this.operator = operator;
     this.hopperOmniSubsystem = hopperOmniSubsystem;
     addRequirements(hopperOmniSubsystem);
 
@@ -35,7 +34,8 @@ public class HopperOmni extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hopperOmniSubsystem.SetOmniSpeed();
+    hopperOmniSubsystem.SetHopperSpeed(operator.getRawAxis(1));
+    hopperOmniSubsystem.SetOmniSpeed(operator.getRawAxis(5));
   }
 
   // Called once the command ends or is interrupted.

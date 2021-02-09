@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -60,8 +61,10 @@ public class Pose extends SubsystemBase {
         this.leftEncoder = leftEncoder;
         this.rightEncoder = rightEncoder;
         gyro.reset();
-        resetEncoders();
+        
         odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+
+        resetEncoders();
         ShuffleboardLayout poseLayout = Shuffleboard.getTab(ControlConstants.SBTabDiagnostics).getLayout("Pose",
                 BuiltInLayouts.kList);
         poseLayout.addNumber("left encoder distance",
@@ -75,6 +78,7 @@ public class Pose extends SubsystemBase {
         poseLayout.addNumber("Robot Heading", () -> odometry.getPoseMeters().getRotation().getDegrees());
         //poseLayout.addNumber("gyro heading", () -> getHeading());
         poseLayout.addNumber("Robot Heading ", () -> odometry.getPoseMeters().getRotation().getDegrees());
+
     }
 
     /**

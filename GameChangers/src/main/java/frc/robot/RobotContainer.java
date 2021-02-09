@@ -10,13 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.HopperOmni;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.FlyWheelMech;
-import frc.robot.mechanisms.HopperOmniMech;
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -26,15 +23,11 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
   private Joystick driver;
-  private HopperOmniMech hOmniMech;
+
   private HopperOmni hOmni;
   private Drive drive;
-
+  private Joystick operator;
   private FlyWheelMech flyWheelMech;
 
   /**
@@ -43,9 +36,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     driver = new Joystick(0);
-
+    operator = new Joystick(1);
     drive = new Drive(driver);
-    hOmniMech = new HopperOmniMech(driver);
     flyWheelMech = new FlyWheelMech(driver);
     configureButtonBindings();
   }
@@ -68,6 +60,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return null;
   }
 }

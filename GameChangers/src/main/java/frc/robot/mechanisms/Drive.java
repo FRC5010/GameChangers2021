@@ -75,16 +75,17 @@ public class Drive {
   }
 
   public static void setCurrentLimits(int currentLimit) {
+    if (RobotBase.isReal()) {
     lDrive1.setSmartCurrentLimit(currentLimit);
     lDrive2.setSmartCurrentLimit(currentLimit);
     rDrive1.setSmartCurrentLimit(currentLimit);
     rDrive2.setSmartCurrentLimit(currentLimit);
+    }
 }
 
 
 
   public void init(Joystick driver) {
-    if (RobotBase.isReal()) {
       this.driver = driver;
         // Neos HAVE to be in brushless
       lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
@@ -116,9 +117,7 @@ public class Drive {
       
       // lEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
       // rEncoder.setVelocityConversionFactor(-Constants.distancePerPulse);
-
-    }
-
+      
     robotPose = new Pose(lEncoder, rEncoder);
     //shooterCam = shooterVision;
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver, robotPose);

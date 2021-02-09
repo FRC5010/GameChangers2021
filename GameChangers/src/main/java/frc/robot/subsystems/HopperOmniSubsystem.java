@@ -17,27 +17,21 @@ public class HopperOmniSubsystem extends SubsystemBase {
   /**
    * Creates a new HopperOmniSubsystem.
    */
-  public Joystick driver;
   public CANSparkMax HOmniMotor;
   public CANSparkMax hopperMotor;
-  public HopperOmniSubsystem(CANSparkMax HOmniMotor, Joystick driver, CANSparkMax hopperMotor) {
+  public HopperOmniSubsystem(CANSparkMax HOmniMotor, CANSparkMax hopperMotor) {
     this.HOmniMotor = HOmniMotor;
-    this.driver = driver;
+
     this.hopperMotor = hopperMotor;
-    setDefaultCommand(new HopperOmni(this));
+
   }
-  public void SetOmniSpeed(){
-    double currSpeed = driver.getRawAxis(1) * .5;
-    
-    if(Math.abs(currSpeed) < .02){
-      hopperMotor.set(0);
-      HOmniMotor.set(0);
-    }else{
-      HOmniMotor.set(-.8);
-      hopperMotor.set(0.05);
-    }
+  public void SetOmniSpeed(double speed){
+      HOmniMotor.set(speed);
   }
 
+  public void SetHopperSpeed(double speed){
+    hopperMotor.set(speed);
+  }
   public void end(){
     HOmniMotor.set(0);
     hopperMotor.set(0);

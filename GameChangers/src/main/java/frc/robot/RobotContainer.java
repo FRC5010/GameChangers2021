@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.HopperOmni;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.FlyWheelMech;
+import frc.robot.mechanisms.IntakeMech;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -29,6 +30,7 @@ public class RobotContainer {
   private Drive drive;
   private Joystick operator;
   private FlyWheelMech flyWheelMech;
+  private IntakeMech intakeMech;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -39,6 +41,7 @@ public class RobotContainer {
     operator = new Joystick(1);
     drive = new Drive(driver);
     flyWheelMech = new FlyWheelMech(driver);
+    intakeMech = new IntakeMech(operator);
     configureButtonBindings();
   }
 

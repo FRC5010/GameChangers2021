@@ -34,8 +34,14 @@ public class ShootBall extends CommandBase {
   @Override
   public void execute() {
     flyWheelSubsystem.spinUpWheel(.1);
-    hopperOmniSubsystem.SetOmniSpeed(.8);
-    hopperOmniSubsystem.SetHopperSpeed(.1);
+    if(flyWheelSubsystem.getReadyToShoot()){
+      hopperOmniSubsystem.SetOmniSpeed(.8);
+      hopperOmniSubsystem.SetHopperSpeed(.1);
+    }else{
+      hopperOmniSubsystem.SetHopperSpeed(0);
+      hopperOmniSubsystem.SetOmniSpeed(0);
+    }
+
   }
 
   // Called once the command ends or is interrupted.

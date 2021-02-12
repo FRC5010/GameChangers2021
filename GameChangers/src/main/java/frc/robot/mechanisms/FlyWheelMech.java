@@ -7,6 +7,7 @@
 
 package frc.robot.mechanisms;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -39,6 +40,7 @@ public class FlyWheelMech {
     private JoystickButton hoodUp;
     private JoystickButton hoodDown;
     private JoystickButton launch;
+    private CANPIDController m_pidController;
 
     private void configurebuttonBindings(){
         hoodUp = new JoystickButton(operator, ControlConstants.hoodUp);
@@ -64,10 +66,15 @@ public class FlyWheelMech {
 
         hood = new CANSparkMax(8,MotorType.kBrushless);
 
-        flyWheelSubsystem = new FlyWheelSubsystem(m1, hood);
+        m_pidController = m1.getPIDController();
+
+        flyWheelSubsystem = new FlyWheelSubsystem(m1, hood, m_pidController);
         flyWheelSubsystem.setDefaultCommand(new FlyWheelDefault(operator, flyWheelSubsystem));
         hopperOmniSubsystem = new HopperOmniSubsystem(HOmniMotor, hopperMotor);
         hopperOmniSubsystem.setDefaultCommand(new HopperOmni(hopperOmniSubsystem, operator));
+
+        
+
         configurebuttonBindings();
     }
 }

@@ -28,12 +28,13 @@ public class FlyWheelSubsystem extends SubsystemBase {
   public CANSparkMax motor;
   public CANSparkMax hood;
   private CANPIDController pidController;
-  private Boolean readyToShoot;
+  private Boolean readyToShoot = false;
 
-  public FlyWheelSubsystem(CANSparkMax m1, CANSparkMax hood) {
-    motor = m1;
+  public FlyWheelSubsystem(CANSparkMax m1, CANSparkMax hood, CANPIDController m_pidController) {
+    //motor = m1;
+    this.motor = m1;
     this.hood = hood;
-    pidController = motor.getPIDController();
+    pidController = m_pidController;
 
     pidController.setP(ShooterConstants.kP);
     pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
@@ -44,6 +45,8 @@ public class FlyWheelSubsystem extends SubsystemBase {
       .withProperties(Map.of("Max", 6000)).withPosition(Constants.shooterColumn, 1);
     layout.addNumber("Current", motor::getOutputCurrent).withWidget(BuiltInWidgets.kDial)
       .withProperties(Map.of("Max", 6000)).withPosition(Constants.shooterColumn, 1);
+    layout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1)
+      .withPosition(Constants.shooterColumn, 1);
   }
 
   public void spinUpWheel(double setPoint){

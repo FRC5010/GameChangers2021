@@ -69,7 +69,7 @@ public class FlyWheelMech {
         m_pidController = m1.getPIDController();
 
         flyWheelSubsystem = new FlyWheelSubsystem(m1, hood, m_pidController);
-        flyWheelSubsystem.setDefaultCommand(new FlyWheelDefault(operator, flyWheelSubsystem));
+        //flyWheelSubsystem.setDefaultCommand(new FlyWheelDefault(operator, flyWheelSubsystem));
         hopperOmniSubsystem = new HopperOmniSubsystem(HOmniMotor, hopperMotor);
         hopperOmniSubsystem.setDefaultCommand(new HopperOmni(hopperOmniSubsystem, operator));
 

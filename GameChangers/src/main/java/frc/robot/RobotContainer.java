@@ -40,7 +40,7 @@ public class RobotContainer {
     driver = new Joystick(0);
     operator = new Joystick(1);
     drive = new Drive(driver);
-    flyWheelMech = new FlyWheelMech(driver);
+    flyWheelMech = new FlyWheelMech(operator);
     intakeMech = new IntakeMech(operator);
     configureButtonBindings();
   }

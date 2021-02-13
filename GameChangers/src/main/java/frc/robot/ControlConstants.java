@@ -54,8 +54,8 @@ public class ControlConstants {
     public static int hoodDown = ButtonNums.B_BUTTON.ordinal(); 
     public static int lowGoalShoot = ButtonNums.X_BUTTON.ordinal(); // implement
     public static int hoodUp = ButtonNums.Y_BUTTON.ordinal(); 
-    public static int overrideArmDeployment = ButtonNums.LEFT_BUMPER.ordinal();
-    public static int toggleIntakeButton = ButtonNums.RIGHT_BUMPER.ordinal();
+    public static int intakeUpButton = ButtonNums.LEFT_BUMPER.ordinal();
+    public static int intakeDownButton = ButtonNums.RIGHT_BUMPER.ordinal();
     public static int startClimb = ButtonNums.START_BUTTON.ordinal(); // Implement
     public static int retractClimb = ButtonNums.BACK_BUTTON.ordinal(); // Implement
     
@@ -94,7 +94,6 @@ public class ControlConstants {
             launchButton = ButtonNums.A_BUTTON.ordinal();
             hoodDown = ButtonNums.B_BUTTON.ordinal(); 
             hoodUp = ButtonNums.Y_BUTTON.ordinal(); 
-            toggleIntakeButton = ButtonNums.RIGHT_BUMPER.ordinal();
             autoNavButton = ButtonNums.X_BUTTON.ordinal();
             return true;
         }

@@ -49,7 +49,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
       .withPosition(Constants.shooterColumn, 1);
   }
 
-  public void spinUpWheel(double setPoint){
+  public void spinUpWheelRPM(double setPoint){
     pidController.setFF(ShooterConstants.kS / setPoint + ShooterConstants.kV);
     pidController.setReference(setPoint, ControlType.kVelocity);
 
@@ -72,7 +72,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public void moveHood(double pow){
-    this.hood.set(.1 * pow);
+    this.hood.set(pow);
   }
 
   @Override

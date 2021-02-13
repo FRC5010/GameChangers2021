@@ -22,14 +22,12 @@ public class DriveTrainMain extends SubsystemBase {
    */
   private SpeedController leftMaster;
   private SpeedController rightMaster;
-  private PowerDistributionPanel pdp;
-
 
   public DriveTrainMain(SpeedController left, SpeedController right, Joystick driver, Pose pose) {
     leftMaster = left;
     rightMaster = right;
 
-    pdp = new PowerDistributionPanel();
+  //  pdp = new PowerDistributionPanel();
     setDefaultCommand(new Driving(this, driver));
    // setDefaultCommand(new FlickStick(this, driver, pose));
   }

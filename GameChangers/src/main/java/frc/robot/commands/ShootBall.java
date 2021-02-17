@@ -33,9 +33,9 @@ public class ShootBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flyWheelSubsystem.spinUpWheelRPM(4500);
+    flyWheelSubsystem.spinUpWheelRPM(5000);
     if(flyWheelSubsystem.getReadyToShoot()){
-      hopperOmniSubsystem.SetOmniSpeed(.8);
+      hopperOmniSubsystem.SetOmniSpeed(-.8);
       hopperOmniSubsystem.SetHopperSpeed(.1);
     }else{
       hopperOmniSubsystem.SetHopperSpeed(0);

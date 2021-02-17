@@ -56,7 +56,7 @@ public class FlyWheelMech {
         this.operator = operator;
         m1 = new CANSparkMax(6,MotorType.kBrushless);
         m2 = new CANSparkMax(7,MotorType.kBrushless);
-        m1.setInverted(false);
+        m1.setInverted(true);
         m2.follow(m1,true);
         m2.setInverted(true);
         m1.setSmartCurrentLimit(40);

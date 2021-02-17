@@ -53,7 +53,9 @@ public class FlyWheelSubsystem extends SubsystemBase {
     pidController.setFF(ShooterConstants.kS / setPoint + ShooterConstants.kV);
     pidController.setReference(setPoint, ControlType.kVelocity);
 
-    if(Math.abs(motor.getEncoder().getVelocity() - setPoint) < 75){
+    //rpm tolerance?
+    // changed 75 to 400
+    if(Math.abs(motor.getEncoder().getVelocity() - setPoint) < 600){
       readyToShoot = true;
     } else {
       readyToShoot = false;

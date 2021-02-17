@@ -35,10 +35,9 @@ public class IntakeBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("run");
     if(joystick != null){
       intakeSubsystem.spin(joystick.getRawAxis(ControlConstants.intakeAxis) - joystick.getRawAxis(ControlConstants.outtakeAxis));
-      
+
     }else{
       intakeSubsystem.spin(power);
     }

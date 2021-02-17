@@ -49,13 +49,21 @@ public class FlyWheelSubsystem extends SubsystemBase {
       .withPosition(Constants.shooterColumn, 1);
   }
 
+  public void spinUpWheel(double power) {
+    motor.set(power);
+    readyToShoot = false;
+  }
+
+  private double setPoint = 0;
   public void spinUpWheelRPM(double setPoint){
+    this.setPoint = setPoint;
     pidController.setFF(ShooterConstants.kS / setPoint + ShooterConstants.kV);
     pidController.setReference(setPoint, ControlType.kVelocity);
-
+  }
+  public void checkWheelSpeed() {
     //rpm tolerance?
     // changed 75 to 400
-    if(Math.abs(motor.getEncoder().getVelocity() - setPoint) < 600){
+    if(Math.abs(motor.getEncoder().getVelocity() - setPoint) < 75){
       readyToShoot = true;
     } else {
       readyToShoot = false;

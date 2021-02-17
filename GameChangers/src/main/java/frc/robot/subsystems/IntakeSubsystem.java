@@ -4,9 +4,16 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
@@ -16,6 +23,12 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem(CANSparkMax m9, CANSparkMax m12) { 
     this.m9 = m9;
     this.m12 = m12;
+    ShuffleboardLayout layout = Shuffleboard.getTab("Intake")
+      .getLayout("Intaker", BuiltInLayouts.kList).withPosition(Constants.shooterColumn, 1).withSize(2,5);
+    layout.addNumber("Velocity", m12.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
+      .withProperties(Map.of("Max", 6000)).withPosition(Constants.shooterColumn, 1);
+    layout.addNumber("Current", m12::getOutputCurrent).withWidget(BuiltInWidgets.kDial)
+      .withProperties(Map.of("Max", 6000)).withPosition(Constants.shooterColumn, 1);
   }
 
   @Override

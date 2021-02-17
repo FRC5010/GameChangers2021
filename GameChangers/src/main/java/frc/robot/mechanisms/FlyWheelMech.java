@@ -58,7 +58,6 @@ public class FlyWheelMech {
         m2 = new CANSparkMax(7,MotorType.kBrushless);
         m1.setInverted(true);
         m2.follow(m1,true);
-        m2.setInverted(true);
         m1.setSmartCurrentLimit(40);
 
         hopperMotor = new CANSparkMax(10, MotorType.kBrushless);

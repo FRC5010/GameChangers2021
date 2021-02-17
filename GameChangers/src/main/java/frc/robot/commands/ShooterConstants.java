@@ -25,13 +25,13 @@ public class ShooterConstants {
     public static double getBaseSpeed() { return baseSpeed; }
     public static double getDistanceToRPM() { return distanceToRPM; }
     static {
-        kSC = .0589;
-        kVC = 0.125;
-        kAC = 0.0108;
+        kSC = .329;
+        kVC = 0.334;
+        kAC = 0.0967;
         kS = kSC / 12;
         kV = kVC / 60 / 1 / (12 - kS);
         kA = kAC / 60 / 1 / (12 - kS);
-        kP = 0.0001;
+        kP = 2.7/12;
         kI = 0;
         kD = 0;
         kIz = 0;

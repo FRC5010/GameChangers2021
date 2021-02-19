@@ -27,6 +27,8 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
 import frc.robot.Robot;
 import frc.robot.commands.RamseteFollower;
+import frc.robot.commands.auto.BarrelRace;
+import frc.robot.commands.auto.SlalomRun;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
 
@@ -67,9 +69,9 @@ public class Drive {
     //shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
     //turnToAngleButton = new POVButton(driver, ControlConstants.turnToAngleButton);
     //turnToAngleButton.whenPressed(new TurnToAngle(driveTrain, robotPose, shooterCam.getAngleX()));
-    //autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
+    autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
     //autoNavButton.whenPressed(new GalacticSearch(driveTrain, intakeCam, robotPose, intakeSystem, shaftSubsystem));
-    //autoNavButton.whenPressed(new BouncePath());
+    autoNavButton.whenPressed(new SlalomRun());
     // intakeDriveButton = new JoystickButton(drivgber, ControlConstants.startClimb);
     // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
   }
@@ -88,12 +90,12 @@ public class Drive {
   public void init(Joystick driver) {
       this.driver = driver;
         // Neos HAVE to be in brushless
-      lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
-      lDrive2 = new CANSparkMax(2, MotorType.kBrushless);
+      lDrive1 = new CANSparkMax(3, MotorType.kBrushless);
+      lDrive2 = new CANSparkMax(4, MotorType.kBrushless);
 
-      rDrive1 = new CANSparkMax(3, MotorType.kBrushless);
-      rDrive2 = new CANSparkMax(4, MotorType.kBrushless);
-      lDrive1.setInverted(DriveConstants.leftReversed);
+      rDrive1 = new CANSparkMax(1, MotorType.kBrushless);
+      rDrive2 = new CANSparkMax(2, MotorType.kBrushless);
+      lDrive1.setInverted(false);
       lDrive2.follow(lDrive1, false);
       rDrive1.setInverted(true);
       rDrive2.follow(rDrive1, false);

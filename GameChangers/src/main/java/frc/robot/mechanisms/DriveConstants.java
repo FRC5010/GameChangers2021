@@ -29,11 +29,11 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class DriveConstants {
-    public static final double ksVolts = 0.179;
-    public static final double kvVoltSecondsPerMeter = 2.25;
-    public static final double kaVoltSecondsSquaredPerMeter = .482;
+    public static final double ksVolts = 0.18;
+    public static final double kvVoltSecondsPerMeter = 1.07;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.213;
     // 2.5 original
-    public static final double kPDriveVel = 2.64;
+    public static final double kPDriveVel = 2.96;
 
     public static final double kTrackwidthMeters = 0.616;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);

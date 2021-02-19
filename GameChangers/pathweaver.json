@@ -4,6 +4,6 @@
   "maxVelocity": 4.5,
   "maxAcceleration": 3.5,
   "wheelBase": 2.02,
-  "gameName": "Barrel Racing Path",
+  "gameName": "Slalom Path",
   "outputDir": ""
 }

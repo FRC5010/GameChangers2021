@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
@@ -28,7 +27,7 @@ public class ShootBall extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSubsystem.spinUpWheelRPM(5000);
+    flyWheelSubsystem.spinUpWheelRPM(3000);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,6 +48,7 @@ public class ShootBall extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     flyWheelSubsystem.end();
+    flyWheelSubsystem.checkWheelSpeed();
   }
 
   // Returns true when the command should end.

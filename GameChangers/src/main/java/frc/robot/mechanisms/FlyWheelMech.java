@@ -11,16 +11,13 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.ControlConstants;
 import frc.robot.commands.HopperOmni;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.ToggleHoodDown;
 import frc.robot.commands.ToggleHoodUp;
-import frc.robot.commands.auto.FlyWheelDefault;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
 

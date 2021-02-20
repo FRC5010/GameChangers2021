@@ -37,6 +37,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
     pidController = m_pidController;
 
     pidController.setP(ShooterConstants.kP);
+    pidController.setI(ShooterConstants.kI);
     pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
 
     ShuffleboardLayout layout = Shuffleboard.getTab(Constants.SBTabDriverDisplay)

@@ -71,7 +71,7 @@ public class Drive {
     //turnToAngleButton.whenPressed(new TurnToAngle(driveTrain, robotPose, shooterCam.getAngleX()));
     autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
     //autoNavButton.whenPressed(new GalacticSearch(driveTrain, intakeCam, robotPose, intakeSystem, shaftSubsystem));
-    autoNavButton.whenPressed(new SlalomRun());
+    autoNavButton.whenPressed(new BarrelRace());
     // intakeDriveButton = new JoystickButton(drivgber, ControlConstants.startClimb);
     // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
   }

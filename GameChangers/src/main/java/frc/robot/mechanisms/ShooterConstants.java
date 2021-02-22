@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.mechanisms;
 
 /** Add your docs here. */
 public class ShooterConstants {
@@ -12,7 +12,7 @@ public class ShooterConstants {
     public static final double ballRadius = 0.09; // m
     public static final double innerPortRadius = 0.16; // m
     public static final double innerPortHeight = 2.500; // meters, measured from floor to center
-    public static double baseSpeed = 4257;
+    public static double baseSpeed = 3000;
     //4500 scores at 7 ft with distancetoRPM at 0
     //4750 scores at 10 ft (about 100 per feet until we hit 10 feet)
     //4830 scores at 12 ft

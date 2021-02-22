@@ -7,12 +7,16 @@
 
 package frc.robot.mechanisms;
 
+import java.util.ResourceBundle.Control;
+
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
 import frc.robot.commands.HopperOmni;
 import frc.robot.commands.ShootBall;
@@ -33,23 +37,32 @@ public class FlyWheelMech {
 
     public FlyWheelSubsystem flyWheelSubsystem;
     public HopperOmniSubsystem hopperOmniSubsystem;
+    private Joystick driver;
     private Joystick operator;
     private JoystickButton hoodUp;
     private JoystickButton hoodDown;
     private JoystickButton launch;
+    private POVButton baseUp;
+    private POVButton baseDown;
     private CANPIDController m_pidController;
 
     private void configurebuttonBindings(){
         hoodUp = new JoystickButton(operator, ControlConstants.hoodUp);
         hoodDown = new JoystickButton(operator, ControlConstants.hoodDown);
         launch = new JoystickButton(operator, ControlConstants.launchButton);
+        baseUp = new POVButton(driver, ControlConstants.incShooter);
+        baseDown = new POVButton(driver, ControlConstants.decShooter);
 
         hoodUp.whileHeld(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whileHeld(new ToggleHoodDown(flyWheelSubsystem));
         launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem));
+
+        baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed += 10));
+        baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed -= 10));
     }
 
-    public FlyWheelMech(Joystick operator){
+    public FlyWheelMech(Joystick driver, Joystick operator){
+        this.driver = driver;
         this.operator = operator;
         m1 = new CANSparkMax(6,MotorType.kBrushless);
         m2 = new CANSparkMax(7,MotorType.kBrushless);
@@ -68,8 +81,6 @@ public class FlyWheelMech {
         //flyWheelSubsystem.setDefaultCommand(new FlyWheelDefault(operator, flyWheelSubsystem));
         hopperOmniSubsystem = new HopperOmniSubsystem(HOmniMotor, hopperMotor);
         hopperOmniSubsystem.setDefaultCommand(new HopperOmni(hopperOmniSubsystem, operator));
-
-        
 
         configurebuttonBindings();
     }

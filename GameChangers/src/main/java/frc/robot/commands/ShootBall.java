@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.mechanisms.ShooterConstants;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
 
@@ -27,12 +28,13 @@ public class ShootBall extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSubsystem.spinUpWheelRPM(3000);
+    flyWheelSubsystem.spinUpWheelRPM(ShooterConstants.baseSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     flyWheelSubsystem.checkWheelSpeed();
     if(flyWheelSubsystem.getReadyToShoot()){
       hopperOmniSubsystem.SetOmniSpeed(-.8);

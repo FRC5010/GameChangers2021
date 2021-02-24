@@ -15,6 +15,7 @@ import frc.robot.commands.HopperOmni;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.FlyWheelMech;
 import frc.robot.mechanisms.IntakeMech;
+import frc.robot.subsystems.VisionLimeLight;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,6 +26,8 @@ import frc.robot.mechanisms.IntakeMech;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Joystick driver;
+
+  private VisionLimeLight shooterVision;
 
   private HopperOmni hOmni;
   private Drive drive;
@@ -37,11 +40,15 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+    shooterVision = new VisionLimeLight("limelight", 20.25, 27.48, 90, ControlConstants.shooterVisionColumn);
     driver = new Joystick(0);
     operator = new Joystick(1);
-    drive = new Drive(driver);
+    drive = new Drive(driver,shooterVision);
     flyWheelMech = new FlyWheelMech(driver, operator);
     intakeMech = new IntakeMech(operator);
+
+
+
     configureButtonBindings();
   }
 

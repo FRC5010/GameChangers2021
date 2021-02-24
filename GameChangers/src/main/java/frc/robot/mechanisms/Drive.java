@@ -26,17 +26,20 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
 import frc.robot.Robot;
+import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.auto.BarrelRace;
 import frc.robot.commands.auto.SlalomRun;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
+import frc.robot.subsystems.VisionSystem;
 
 /**
  * Add your docs here.
  */
 public class Drive {
   public static DriveTrainMain driveTrain;
+  private static VisionSystem shooterCam;
 
   public Joystick driver;
   public static CANSparkMax lDrive1;
@@ -52,21 +55,23 @@ public class Drive {
 
   public JoystickButton intakeAimButton;
   public JoystickButton shooterAimButton;
+
+  
   public POVButton turnToAngleButton;
 
   public JoystickButton intakeDriveButton;
   public JoystickButton autoNavButton;
 
-  public Drive(Joystick driver) {
-    init(driver);
+  public Drive(Joystick driver, VisionSystem shooterVision) {
+    init(driver, shooterVision);
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
     //intakeAimButton = new JoystickButton(driver, ControlConstants.intakeAimButton);
     //intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 0));
-    //shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
-    //shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
+    shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
+    shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
     //turnToAngleButton = new POVButton(driver, ControlConstants.turnToAngleButton);
     //turnToAngleButton.whenPressed(new TurnToAngle(driveTrain, robotPose, shooterCam.getAngleX()));
     autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
@@ -87,14 +92,14 @@ public class Drive {
 
 
 
-  public void init(Joystick driver) {
+  public void init(Joystick driver, VisionSystem shooterVision) {
       this.driver = driver;
         // Neos HAVE to be in brushless
-      lDrive1 = new CANSparkMax(3, MotorType.kBrushless);
-      lDrive2 = new CANSparkMax(4, MotorType.kBrushless);
+      lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
+      lDrive2 = new CANSparkMax(2, MotorType.kBrushless);
 
-      rDrive1 = new CANSparkMax(1, MotorType.kBrushless);
-      rDrive2 = new CANSparkMax(2, MotorType.kBrushless);
+      rDrive1 = new CANSparkMax(3, MotorType.kBrushless);
+      rDrive2 = new CANSparkMax(4, MotorType.kBrushless);
       lDrive1.setInverted(false);
       lDrive2.follow(lDrive1, false);
       rDrive1.setInverted(true);
@@ -121,7 +126,7 @@ public class Drive {
       // rEncoder.setVelocityConversionFactor(-Constants.distancePerPulse);
       
     robotPose = new Pose(lEncoder, rEncoder);
-    //shooterCam = shooterVision;
+    shooterCam = shooterVision;
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver, robotPose);
     //intakeCam = intakeVision;
     //intakeSystem = intakeSubsystem;

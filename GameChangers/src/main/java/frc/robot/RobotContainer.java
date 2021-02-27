@@ -40,14 +40,12 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    shooterVision = new VisionLimeLight("limelight", 20.25, 27.48, 90, ControlConstants.shooterVisionColumn);
+    shooterVision = new VisionLimeLight("limelight-shooter", 19.25, 17.15, 90, ControlConstants.shooterVisionColumn);
     driver = new Joystick(0);
     operator = new Joystick(1);
     drive = new Drive(driver,shooterVision);
-    flyWheelMech = new FlyWheelMech(driver, operator);
+    flyWheelMech = new FlyWheelMech(driver, operator, shooterVision);
     intakeMech = new IntakeMech(operator);
-
-
 
     configureButtonBindings();
   }

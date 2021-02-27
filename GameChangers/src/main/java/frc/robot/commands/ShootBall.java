@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.mechanisms.ShooterConstants;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
+import frc.robot.subsystems.VisionSystem;
 
 public class ShootBall extends CommandBase {
   /**
@@ -18,23 +19,27 @@ public class ShootBall extends CommandBase {
    */
   public FlyWheelSubsystem flyWheelSubsystem;
   private HopperOmniSubsystem hopperOmniSubsystem;
-  public ShootBall(FlyWheelSubsystem flyWheelSubsystem, HopperOmniSubsystem hopperOmniSubsystem) {
+  private VisionSystem visionSystem;
+  public ShootBall(FlyWheelSubsystem flyWheelSubsystem, HopperOmniSubsystem hopperOmniSubsystem, VisionSystem visionSystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.hopperOmniSubsystem = hopperOmniSubsystem;
     this.flyWheelSubsystem = flyWheelSubsystem;
-    addRequirements(this.flyWheelSubsystem, this.hopperOmniSubsystem);
+    this.visionSystem = visionSystem;
+    addRequirements(this.flyWheelSubsystem, this.hopperOmniSubsystem, this.visionSystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSubsystem.spinUpWheelRPM(ShooterConstants.baseSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    double distance = visionSystem.getDistance();
+    double rpm = 0.0307921 * Math.pow(distance, 2) + -1.24352 * distance + 1929.11;
+    flyWheelSubsystem.spinUpWheelRPM(rpm);
+
     flyWheelSubsystem.checkWheelSpeed();
     if(flyWheelSubsystem.getReadyToShoot()){
       hopperOmniSubsystem.SetOmniSpeed(-.8);

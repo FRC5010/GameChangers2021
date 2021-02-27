@@ -7,8 +7,6 @@
 
 package frc.robot.mechanisms;
 
-import java.util.ResourceBundle.Control;
-
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -18,12 +16,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
+import frc.robot.commands.CameraCalibrateShooter;
 import frc.robot.commands.HopperOmni;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.ToggleHoodDown;
 import frc.robot.commands.ToggleHoodUp;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
+import frc.robot.subsystems.VisionSystem;
 
 /**
  * Add your docs here.
@@ -42,9 +42,11 @@ public class FlyWheelMech {
     private JoystickButton hoodUp;
     private JoystickButton hoodDown;
     private JoystickButton launch;
+    private JoystickButton calibrate;
     private POVButton baseUp;
     private POVButton baseDown;
     private CANPIDController m_pidController;
+    private VisionSystem vision;
 
     private void configurebuttonBindings(){
         hoodUp = new JoystickButton(operator, ControlConstants.hoodUp);
@@ -52,18 +54,22 @@ public class FlyWheelMech {
         launch = new JoystickButton(operator, ControlConstants.launchButton);
         baseUp = new POVButton(driver, ControlConstants.incShooter);
         baseDown = new POVButton(driver, ControlConstants.decShooter);
+        calibrate = new JoystickButton(driver, ControlConstants.calibrate);
 
         hoodUp.whileHeld(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whileHeld(new ToggleHoodDown(flyWheelSubsystem));
-        launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem));
+        launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
 
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed += 10));
         baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed -= 10));
+        calibrate.whenPressed(new CameraCalibrateShooter(vision));
     }
 
-    public FlyWheelMech(Joystick driver, Joystick operator){
+    public FlyWheelMech(Joystick driver, Joystick operator, VisionSystem vision){
         this.driver = driver;
         this.operator = operator;
+        this.vision = vision;
+
         m1 = new CANSparkMax(6,MotorType.kBrushless);
         m2 = new CANSparkMax(7,MotorType.kBrushless);
         m1.setInverted(true);

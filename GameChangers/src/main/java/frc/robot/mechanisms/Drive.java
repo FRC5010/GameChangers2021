@@ -29,6 +29,7 @@ import frc.robot.Robot;
 import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.auto.BarrelRace;
+import frc.robot.commands.auto.BouncePath;
 import frc.robot.commands.auto.SlalomRun;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
@@ -76,7 +77,7 @@ public class Drive {
     //turnToAngleButton.whenPressed(new TurnToAngle(driveTrain, robotPose, shooterCam.getAngleX()));
     autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
     //autoNavButton.whenPressed(new GalacticSearch(driveTrain, intakeCam, robotPose, intakeSystem, shaftSubsystem));
-    autoNavButton.whenPressed(new BarrelRace());
+    autoNavButton.whenPressed(new BouncePath());
     // intakeDriveButton = new JoystickButton(drivgber, ControlConstants.startClimb);
     // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
   }

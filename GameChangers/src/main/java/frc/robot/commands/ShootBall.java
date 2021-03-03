@@ -36,14 +36,19 @@ public class ShootBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double distance = visionSystem.getDistance();
-    double rpm = 0.0307921 * Math.pow(distance, 2) + -1.24352 * distance + 1929.11;
-    flyWheelSubsystem.spinUpWheelRPM(rpm);
+    double distance = 60;
+
+    if(visionSystem.isValidTarget())
+      distance = visionSystem.getDistance();
+    
+    //rpm -= 200;
+    //test since flywheel never fully reaches setpoint
+    flyWheelSubsystem.aimToDistance(distance);
 
     flyWheelSubsystem.checkWheelSpeed();
     if(flyWheelSubsystem.getReadyToShoot()){
-      hopperOmniSubsystem.SetOmniSpeed(-.8);
-      hopperOmniSubsystem.SetHopperSpeed(.1);
+      hopperOmniSubsystem.SetOmniSpeed(-.9);
+      hopperOmniSubsystem.SetHopperSpeed(.25);
     }else{
       hopperOmniSubsystem.SetHopperSpeed(0);
       hopperOmniSubsystem.SetOmniSpeed(0);

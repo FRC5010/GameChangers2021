@@ -17,7 +17,4 @@ package frc.robot;
  */
 public final class Constants {
 
-	public static final String SBTabDriverDisplay = "Driver";
-	public static final String SBTabDiagnostics = "Diagnostics";
-	public static final int shooterColumn = 1;
 }

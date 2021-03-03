@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.ControlConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
@@ -24,11 +25,11 @@ public class IntakeSubsystem extends SubsystemBase {
     this.m9 = m9;
     this.m12 = m12;
     ShuffleboardLayout layout = Shuffleboard.getTab("Intake")
-      .getLayout("Intaker", BuiltInLayouts.kList).withPosition(Constants.shooterColumn, 1).withSize(2,5);
+      .getLayout("Intaker", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 1).withSize(2,5);
     layout.addNumber("Velocity", m12.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
-      .withProperties(Map.of("Max", 6000)).withPosition(Constants.shooterColumn, 1);
+      .withProperties(Map.of("Max", 6000)).withPosition(ControlConstants.shooterColumn, 1);
     layout.addNumber("Current", m12::getOutputCurrent).withWidget(BuiltInWidgets.kDial)
-      .withProperties(Map.of("Max", 6000)).withPosition(Constants.shooterColumn, 1);
+      .withProperties(Map.of("Max", 6000)).withPosition(ControlConstants.shooterColumn, 1);
   }
 
   @Override

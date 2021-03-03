@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.ControlConstants;
 import frc.robot.mechanisms.ShooterConstants;
 
 public class FlyWheelSubsystem extends SubsystemBase {
@@ -35,6 +36,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
   private CANPIDController pidController;
   private Boolean readyToShoot = false;
   private double flyWheelSetPoint = 0;
+  private double hoodSetPoint = 1600;
 
   public FlyWheelSubsystem(CANSparkMax m1, CANSparkMax hood, CANPIDController m_pidController,
       VisionSystem visionSystem) {
@@ -50,20 +52,25 @@ public class FlyWheelSubsystem extends SubsystemBase {
     pidController.setD(ShooterConstants.kD);
     pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
 
-    ShuffleboardLayout layout = Shuffleboard.getTab(Constants.SBTabDriverDisplay)
-        .getLayout("Shooter", BuiltInLayouts.kList).withPosition(Constants.shooterColumn, 0).withSize(2, 5);
-    layout.addNumber("Velocity", motor.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
-        .withProperties(Map.of("Max", 6000)).withPosition(Constants.shooterColumn, 1);
-    layout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1)
-        .withPosition(Constants.shooterColumn, 1);
-    layout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
-        .withPosition(Constants.shooterColumn, 3).withProperties(Map.of("Max", 6000));
-    layout.addNumber("Base Speed", ShooterConstants::getBaseSpeed).withSize(1, 1).withPosition(Constants.shooterColumn,
-        4);
-    layout.addNumber("Distance to RPM", ShooterConstants::getDistanceToRPM).withSize(1, 1)
-        .withPosition(Constants.shooterColumn, 5);
+    // ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
+    //     .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 0).withSize(2, 5);
+    // layout.addNumber("Velocity", motor.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kGraph)
+    //     .withProperties(Map.of("Max", 6000)).withPosition(ControlConstants.shooterColumn, 1);
+    // layout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1)
+    //     .withPosition(ControlConstants.shooterColumn, 2);
+    // layout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
+    //     .withPosition(ControlConstants.shooterColumn, 3).withProperties(Map.of("Max", 6000));
 
-    ShuffleboardLayout layoutDiag = Shuffleboard.getTab(Constants.SBTabDiagnostics).getLayout("Shooter",
+    // ShuffleboardLayout hoodLayout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
+    //     .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.hoodColumn, 0).withSize(2, 5);
+    // hoodLayout.addNumber("Velocity", motor.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kGraph)
+    //     .withProperties(Map.of("Max", 2000)).withPosition(ControlConstants.hoodColumn, 1);
+    // hoodLayout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1)
+    //     .withPosition(ControlConstants.hoodColumn, 2);
+    // hoodLayout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
+    //     .withPosition(ControlConstants.hoodColumn, 3).withProperties(Map.of("Max", 6000));
+
+    ShuffleboardLayout layoutDiag = Shuffleboard.getTab(ControlConstants.SBTabDiagnostics).getLayout("Shooter",
         BuiltInLayouts.kList);
     layoutDiag.addNumber("HoodPot", hoodPot::getAverageValue);
     layoutDiag.addNumber("Shooter Temp", motor::getMotorTemperature);
@@ -75,6 +82,11 @@ public class FlyWheelSubsystem extends SubsystemBase {
     readyToShoot = false;
   }
 
+  public void aimToDistance(double distance) {
+    double rpm = 0.0307921 * Math.pow(distance, 2) + -1.24352 * distance + 1929.11;
+    spinUpWheelRPM(rpm);
+    aimHood(distance);
+  }
   // data for new flywheel distance to hood and rpm
   // https://www.desmos.com/calculator/ykvrqcrgit
   public void spinUpWheelRPM(double setPoint) {
@@ -84,13 +96,23 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public void checkWheelSpeed() {
+    boolean readyToRPM;
+    boolean readyToAngle;
     // rpm tolerance?
     // changed 75 to 400
     if (Math.abs(motor.getEncoder().getVelocity() - flyWheelSetPoint) < 75) {
-      readyToShoot = true;
+      readyToRPM = true;
     } else {
-      readyToShoot = false;
+      readyToRPM = false;
     }
+
+    if (Math.abs(hoodPot.getAverageValue() - hoodSetPoint) < 25) {
+      readyToAngle = true;
+    } else {
+      readyToAngle = false;
+    }
+
+    readyToShoot = readyToAngle && readyToRPM;
   }
 
   public void setWheelSpeed(double setPoint) {
@@ -103,6 +125,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public void end() {
     motor.set(0);
+    aimHood(30);
   }
 
   public void moveHood(double pow) {
@@ -112,27 +135,33 @@ public class FlyWheelSubsystem extends SubsystemBase {
       this.hood.set(0);
   }
 
+  public void aimHood(double distance){
+    hoodSetPoint = 0.010596 * Math.pow(distance, 2) + -6.96343 * distance + 1924.95;
+    hoodSetPoint = Math.max(620, hoodSetPoint);
+    hoodSetPoint = Math.min(1950, hoodSetPoint);
+  }
+
+  public void PIDHood(){
+    double potValue = hoodPot.getAverageValue();
+    double error = potValue - hoodSetPoint;
+    hood.set(0.00075188 * error);
+  }
+
   public int getHoodValue(){
     return hoodPot.getAverageValue();
   }
 
   @Override
   public void periodic() {
-    double hoodSetPoint = 700;
-    if (visionSystem.isValidTarget()) {
-      double distance = visionSystem.getDistance();
-      hoodSetPoint = 0.010596 * Math.pow(distance, 2) + -6.96343 * distance + 1924.95;
-      hoodSetPoint = Math.max(620, hoodSetPoint);
-      hoodSetPoint = Math.min(1950, hoodSetPoint);
-    }
-    double potValue = hoodPot.getAverageValue();
-    double error = potValue - hoodSetPoint;
-    //hood.set(0.00075188 * error);
-
+    PIDHood();
   }
 
   public double getSetPoint() {
     return flyWheelSetPoint;
+  }
+
+  public double getHoodSetPoint() {
+    return hoodSetPoint;
   }
 
   public void setPoint(double setPoint) {

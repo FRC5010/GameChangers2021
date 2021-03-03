@@ -33,7 +33,7 @@ public class ShooterConstants {
         kA = kAC / 60 / 1 / (12 - kS);
         kP = 0.0007;
         kI = 0.000;
-        kD = 0.000001;
+        kD = 0.0000001;
         kIz = 0;
         kFF = 1.0 / 4600.0;
         kMaxOutput = 1;

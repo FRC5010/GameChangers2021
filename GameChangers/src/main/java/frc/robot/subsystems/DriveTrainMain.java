@@ -42,8 +42,9 @@ public class DriveTrainMain extends SubsystemBase {
   }
 
   public void arcadeDrive(double fPow, double tPow) {
-    tPow *= 1.1;
-    fPow *= 1.1;
+    tPow *= 0.7;
+    fPow *= 0.8;
+    //0.7 is set currently for Michael's practice runs
     leftMaster.set(fPow + tPow);
     rightMaster.set(fPow - tPow);
   }

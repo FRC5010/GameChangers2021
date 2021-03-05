@@ -69,7 +69,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
         .withProperties(Map.of("Max", 6000));
 
     ShuffleboardLayout hoodLayout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
-        .getLayout("Shooter", BuiltInLayouts.kList)
+        .getLayout("Hood", BuiltInLayouts.kList)
         .withPosition(ControlConstants.hoodColumn, 0)
         .withSize(2, 5);
     hoodLayout.addNumber("Pot Position", motor.getEncoder()::getVelocity)

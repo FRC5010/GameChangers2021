@@ -67,8 +67,9 @@ public class ControlConstants {
     // Shuffleboard constants
     public static String SBTabDriverDisplay = "Driver Display";
     public static String SBTabDiagnostics = "Diagnostics";
-    public static int hoodColumn = 0;
-    public static int shooterColumn = 2;
+    public static int shooterColumn = 0;
+    public static int hoodColumn = 2;
+
     public static int spinnerColumn = 4;
     public static int autoColumn = 4;
     public static int shooterVisionColumn = 7;

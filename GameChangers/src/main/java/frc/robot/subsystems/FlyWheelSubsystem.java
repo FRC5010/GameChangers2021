@@ -52,23 +52,38 @@ public class FlyWheelSubsystem extends SubsystemBase {
     pidController.setD(ShooterConstants.kD);
     pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
 
-    // ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
-    //     .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 0).withSize(2, 5);
-    // layout.addNumber("Velocity", motor.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kGraph)
-    //     .withProperties(Map.of("Max", 6000)).withPosition(ControlConstants.shooterColumn, 1);
-    // layout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1)
-    //     .withPosition(ControlConstants.shooterColumn, 2);
-    // layout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
-    //     .withPosition(ControlConstants.shooterColumn, 3).withProperties(Map.of("Max", 6000));
+    ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
+        .getLayout("Shooter", BuiltInLayouts.kList)
+        .withPosition(ControlConstants.shooterColumn, 0)
+        .withSize(2, 5);
+    layout.addNumber("Velocity", motor.getEncoder()::getVelocity)
+        .withWidget(BuiltInWidgets.kGraph)
+        .withProperties(Map.of("Max", 6000))
+        .withPosition(ControlConstants.shooterColumn, 1);
+    layout.addBoolean("Ready To Shoot", this::getReadyToShoot)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .withSize(2, 1)
+        .withPosition(ControlConstants.shooterColumn, 2);
+    layout.addNumber("Expected Velocity", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
+        .withPosition(ControlConstants.shooterColumn, 3)
+        .withProperties(Map.of("Max", 6000));
 
-    // ShuffleboardLayout hoodLayout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
-    //     .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.hoodColumn, 0).withSize(2, 5);
-    // hoodLayout.addNumber("Velocity", motor.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kGraph)
-    //     .withProperties(Map.of("Max", 2000)).withPosition(ControlConstants.hoodColumn, 1);
-    // hoodLayout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1)
-    //     .withPosition(ControlConstants.hoodColumn, 2);
-    // hoodLayout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
-    //     .withPosition(ControlConstants.hoodColumn, 3).withProperties(Map.of("Max", 6000));
+    ShuffleboardLayout hoodLayout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
+        .getLayout("Shooter", BuiltInLayouts.kList)
+        .withPosition(ControlConstants.hoodColumn, 0)
+        .withSize(2, 5);
+    hoodLayout.addNumber("Pot Position", motor.getEncoder()::getVelocity)
+        .withWidget(BuiltInWidgets.kGraph)
+        .withProperties(Map.of("Max", 2000))
+        .withPosition(ControlConstants.hoodColumn, 1);
+    hoodLayout.addBoolean("Hood Ready", this::getHoodReadyToShoot)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .withSize(2, 1)
+        .withPosition(ControlConstants.hoodColumn, 2);
+    hoodLayout.addNumber("Hood Pos", this::getSetPoint)
+        .withWidget(BuiltInWidgets.kDial)
+        .withPosition(ControlConstants.hoodColumn, 3)
+        .withProperties(Map.of("Max", 6000));
 
     ShuffleboardLayout layoutDiag = Shuffleboard.getTab(ControlConstants.SBTabDiagnostics).getLayout("Shooter",
         BuiltInLayouts.kList);
@@ -121,6 +136,10 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public boolean getReadyToShoot() {
     return readyToShoot;
+  }
+
+  public boolean getHoodReadyToShoot() {
+    return Math.abs(hoodPot.getAverageValue() - hoodSetPoint) < 25;
   }
 
   public void end() {

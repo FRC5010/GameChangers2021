@@ -57,7 +57,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
         .withPosition(ControlConstants.shooterColumn, 0)
         .withSize(2, 5);
     layout.addNumber("Velocity", motor.getEncoder()::getVelocity)
-        .withWidget(BuiltInWidgets.kGraph)
+        .withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("Max", 6000))
         .withPosition(ControlConstants.shooterColumn, 1);
     layout.addBoolean("Ready To Shoot", this::getReadyToShoot)
@@ -72,18 +72,18 @@ public class FlyWheelSubsystem extends SubsystemBase {
         .getLayout("Hood", BuiltInLayouts.kList)
         .withPosition(ControlConstants.hoodColumn, 0)
         .withSize(2, 5);
-    hoodLayout.addNumber("Pot Position", motor.getEncoder()::getVelocity)
-        .withWidget(BuiltInWidgets.kGraph)
-        .withProperties(Map.of("Max", 2000))
+    hoodLayout.addNumber("Pot Position", this::getHoodValueDisplay)
+        .withWidget(BuiltInWidgets.kDial)
+        .withProperties(Map.of("Max", ShooterConstants.hoodMax))
         .withPosition(ControlConstants.hoodColumn, 1);
     hoodLayout.addBoolean("Hood Ready", this::getHoodReadyToShoot)
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withSize(2, 1)
         .withPosition(ControlConstants.hoodColumn, 2);
-    hoodLayout.addNumber("Hood Pos", this::getSetPoint)
+    hoodLayout.addNumber("Hood Pos", this::getHoodSetPointDisplay)
         .withWidget(BuiltInWidgets.kDial)
         .withPosition(ControlConstants.hoodColumn, 3)
-        .withProperties(Map.of("Max", 6000));
+        .withProperties(Map.of("Max", ShooterConstants.hoodMax));
 
     ShuffleboardLayout layoutDiag = Shuffleboard.getTab(ControlConstants.SBTabDiagnostics).getLayout("Shooter",
         BuiltInLayouts.kList);
@@ -170,6 +170,10 @@ public class FlyWheelSubsystem extends SubsystemBase {
     return hoodPot.getAverageValue();
   }
 
+  public int getHoodValueDisplay(){
+    return ShooterConstants.hoodMax - hoodPot.getAverageValue();
+  }
+
   @Override
   public void periodic() {
     PIDHood();
@@ -181,6 +185,10 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public double getHoodSetPoint() {
     return hoodSetPoint;
+  }
+
+  public double getHoodSetPointDisplay() {
+    return ShooterConstants.hoodMax - hoodSetPoint;
   }
 
   public void setPoint(double setPoint) {

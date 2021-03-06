@@ -25,6 +25,10 @@ public class VisionValues {
     // distance
     private double distance = 0.0;
     
+    // boundaries
+    private double horizontal = 0.0;
+    private double vertical = 0.0;
+
     public VisionValues() {        
     }
 
@@ -35,6 +39,18 @@ public class VisionValues {
         this.angleX = angleX;
         this.angleY = angleY;
         this.distance = distance;
+    }
+
+    public VisionValues(boolean valid, double centerX, double centerY, double angleX, double angleY, 
+        double distance, double horizontal, double vertical) {
+        this.valid = valid;
+        this.centerX = centerX;
+        this.centerY = centerY;
+        this.angleX = angleX;
+        this.angleY = angleY;
+        this.distance = distance;
+        this.horizontal = horizontal;
+        this.vertical = vertical;
     }
 
     public boolean getValid() {
@@ -62,5 +78,13 @@ public class VisionValues {
     }
     public double getDistanceViaArea() {
         return 0;
+    }
+
+    public double getHorizontal() {
+        return horizontal;
+    }
+
+    public double getVertical() {
+        return vertical;
     }
 }

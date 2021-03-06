@@ -26,12 +26,12 @@ public class ShooterConstants {
     public static double getDistanceToRPM() { return distanceToRPM; }
     static {
         kSC = 0.278;
-        kVC = 0.132;
+        kVC = 0.134;
         kAC = 0.0455;
         kS = kSC / 12;
         kV = kVC / 60 / 1 / (12 - kS);
         kA = kAC / 60 / 1 / (12 - kS);
-        kP = 0; //1.82 / 2;
+        kP = 0.0008;
         kI = 0.000;
         kD = 0.0000000;
         kIz = 0;
@@ -40,4 +40,6 @@ public class ShooterConstants {
         kMinOutput = -1;
         maxRPM = 5800;
     }
+
+    public static int hoodMax = 2000;
 }

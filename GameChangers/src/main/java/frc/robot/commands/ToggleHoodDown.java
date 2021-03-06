@@ -26,13 +26,13 @@ public class ToggleHoodDown extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flyWheelSubsystem.moveHood(-.1);
+    flyWheelSubsystem.decHoodSetPoint();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    flyWheelSubsystem.moveHood(0);
+    //flyWheelSubsystem.moveHood(0);
   }
 
   // Returns true when the command should end.

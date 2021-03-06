@@ -40,7 +40,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    shooterVision = new VisionLimeLight("limelight-shooter", 19.25, 17.15, 90, ControlConstants.shooterVisionColumn);
+    shooterVision = new VisionLimeLight("limelight-shooter", 19.25, 14.562694, 90, ControlConstants.shooterVisionColumn);
     driver = new Joystick(0);
     operator = new Joystick(1);
     drive = new Drive(driver,shooterVision);

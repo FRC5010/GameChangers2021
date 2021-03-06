@@ -87,4 +87,13 @@ public class VisionValues {
     public double getVertical() {
         return vertical;
     }
+
+    public void addNewValues(VisionValues rawValues, int count, int maxCount) {
+        valid = count >= maxCount;
+        angleX = ((count - 1) * angleX + rawValues.getAngleX()) / count;
+        angleY = ((count - 1) * angleY + rawValues.getAngleY()) / count;
+        distance = ((count - 1) * distance + rawValues.getDistance()) / count;
+        horizontal = ((count - 1) * horizontal + rawValues.getHorizontal()) / count;
+        vertical = ((count - 1) * vertical + rawValues.getVertical()) / count;
+    }
 }

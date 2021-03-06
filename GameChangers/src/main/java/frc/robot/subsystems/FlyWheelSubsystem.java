@@ -72,18 +72,18 @@ public class FlyWheelSubsystem extends SubsystemBase {
         .getLayout("Hood", BuiltInLayouts.kList)
         .withPosition(ControlConstants.hoodColumn, 0)
         .withSize(2, 5);
-    hoodLayout.addNumber("Pot Position", this::getHoodValueDisplay)
+    hoodLayout.addNumber("Pot Position", this::getHoodValue)
         .withWidget(BuiltInWidgets.kDial)
-        .withProperties(Map.of("Max", ShooterConstants.hoodMax))
+        .withProperties(Map.of("Max", ShooterConstants.hoodMax * 2))
         .withPosition(ControlConstants.hoodColumn, 1);
     hoodLayout.addBoolean("Hood Ready", this::getHoodReadyToShoot)
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withSize(2, 1)
         .withPosition(ControlConstants.hoodColumn, 2);
-    hoodLayout.addNumber("Hood Pos", this::getHoodSetPointDisplay)
+    hoodLayout.addNumber("Hood Pos", this::getHoodSetPoint)
         .withWidget(BuiltInWidgets.kDial)
         .withPosition(ControlConstants.hoodColumn, 3)
-        .withProperties(Map.of("Max", ShooterConstants.hoodMax));
+        .withProperties(Map.of("Max", ShooterConstants.hoodMax * 2));
 
     ShuffleboardLayout layoutDiag = Shuffleboard.getTab(ControlConstants.SBTabDiagnostics).getLayout("Shooter",
         BuiltInLayouts.kList);
@@ -98,12 +98,20 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public void aimToDistance(double distance) {
-    double rpm = 0.0307921 * Math.pow(distance, 2) + -1.24352 * distance + 1929.11;
+    distance = Double.valueOf(distance).intValue();
+    double rpm = 0.0127223 * Math.pow(distance, 2) + 2.64334 * distance + 1759.04;
     spinUpWheelRPM(rpm);
-    aimHood(distance);
+    //aimHood(distance);
   }
+
+  public void aimHood(double distance){
+    hoodSetPoint = 0.0075 * Math.pow(distance, 2) + -6.05 * distance + 1873.13;
+    hoodSetPoint = Math.max(620, hoodSetPoint);
+    hoodSetPoint = Math.min(1950, hoodSetPoint);
+  }
+
   // data for new flywheel distance to hood and rpm
-  // https://www.desmos.com/calculator/ykvrqcrgit
+  // https://www.desmos.com/calculator/3redjlm50e
   public void spinUpWheelRPM(double setPoint) {
     this.flyWheelSetPoint = setPoint;
     pidController.setFF(ShooterConstants.kS / setPoint + ShooterConstants.kV);
@@ -115,7 +123,11 @@ public class FlyWheelSubsystem extends SubsystemBase {
     boolean readyToAngle;
     // rpm tolerance?
     // changed 75 to 400
-    if (Math.abs(motor.getEncoder().getVelocity() - flyWheelSetPoint) < 75) {
+    double rpmRange = 25;
+    if (readyToShoot) {
+      rpmRange = 150;
+    }
+    if (Math.abs(motor.getEncoder().getVelocity() - flyWheelSetPoint) < rpmRange) {
       readyToRPM = true;
     } else {
       readyToRPM = false;
@@ -154,16 +166,10 @@ public class FlyWheelSubsystem extends SubsystemBase {
       this.hood.set(0);
   }
 
-  public void aimHood(double distance){
-    hoodSetPoint = 0.010596 * Math.pow(distance, 2) + -6.96343 * distance + 1924.95;
-    hoodSetPoint = Math.max(620, hoodSetPoint);
-    hoodSetPoint = Math.min(1950, hoodSetPoint);
-  }
-
   public void PIDHood(){
     double potValue = hoodPot.getAverageValue();
     double error = potValue - hoodSetPoint;
-    hood.set(0.00075188 * error);
+    hood.set(0.00076 * error);
   }
 
   public int getHoodValue(){
@@ -194,4 +200,12 @@ public class FlyWheelSubsystem extends SubsystemBase {
   public void setPoint(double setPoint) {
     this.flyWheelSetPoint = setPoint;
   }
+
+  public void incHoodSetPoint() {
+    hoodSetPoint--;
+  }
+  public void decHoodSetPoint() {
+    hoodSetPoint++;
+  }
+
 }

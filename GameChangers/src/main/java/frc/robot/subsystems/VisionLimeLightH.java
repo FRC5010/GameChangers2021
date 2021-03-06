@@ -42,10 +42,6 @@ public class VisionLimeLightH extends VisionSystem {
     }
   }
 
-  public void calibarateCamAngle(double angleY) {
-    camAngle = 30.345 - angleY;
-  }
-
   public void setLight(boolean on) {
     table.getTable(name).getEntry("ledMode").setNumber(on ? 3 : 1);
   }

@@ -16,5 +16,5 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static double CAMERA_CAL_ANGLE = 30.345;
+    public static double CAMERA_CAL_DISTANCE = 120;
 }

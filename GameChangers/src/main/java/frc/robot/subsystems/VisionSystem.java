@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.ControlConstants;
 
 public abstract class VisionSystem extends SubsystemBase {
@@ -23,6 +24,7 @@ public abstract class VisionSystem extends SubsystemBase {
   protected VisionValues rawValues, smoothedValues;
   protected ShuffleboardLayout visionLayout;
   protected boolean updateValues = false;
+  protected double CAMERA_CAL_ANGLE = 0;
   // variables needed to process new variables, plus the new variables
   // angles
 
@@ -41,6 +43,7 @@ public abstract class VisionSystem extends SubsystemBase {
     this.camAngle = camAngle;
     this.targetHeight = targetHeight;
     updateValues = true;
+    CAMERA_CAL_ANGLE = Math.tanh((targetHeight - camHeight) / Constants.CAMERA_CAL_DISTANCE);
     ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
     visionLayout = driverTab.getLayout(name + " Vision", BuiltInLayouts.kGrid).withPosition(colIndex, 0).withSize(3, 5);
     table = NetworkTableInstance.getDefault();
@@ -63,8 +66,6 @@ public abstract class VisionSystem extends SubsystemBase {
   }
 
   public abstract void updateViaNetworkTable(String path);
-
-  public abstract void calibarateCamAngle(double angleY);
 
   public abstract void setLight(boolean on);
   public abstract boolean isLightOn();
@@ -92,5 +93,9 @@ public abstract class VisionSystem extends SubsystemBase {
 
   public boolean isValidTarget() {
     return rawValues.getValid();
+  }
+  
+  public void calibarateCamAngle(double angleY) {
+    camAngle = CAMERA_CAL_ANGLE - angleY;
   }
 }

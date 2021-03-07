@@ -37,8 +37,10 @@ public class VisionLimeLightH extends VisionSystem {
       // calculating distance
       double distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY + camAngle));
       rawValues = new VisionValues(valid, 0, 0, angleX, angleY, distance);
+      smoothedValues = rawValues;
     } else {
       rawValues = new VisionValues();
+      smoothedValues = new VisionValues();
     }
   }
 

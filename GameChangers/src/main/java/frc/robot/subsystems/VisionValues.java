@@ -29,6 +29,8 @@ public class VisionValues {
     private double horizontal = 0.0;
     private double vertical = 0.0;
 
+    private int count = 0;
+
     public VisionValues() {        
     }
 
@@ -88,12 +90,14 @@ public class VisionValues {
         return vertical;
     }
 
-    public void addNewValues(VisionValues rawValues, int count, int maxCount) {
+    public void averageValues(VisionValues rawValues, int maxCount) {
+        count++;
+        count = Math.min(count, maxCount);
         valid = count >= maxCount;
         angleX = ((count - 1) * angleX + rawValues.getAngleX()) / count;
         angleY = ((count - 1) * angleY + rawValues.getAngleY()) / count;
         distance = ((count - 1) * distance + rawValues.getDistance()) / count;
-        horizontal = ((count - 1) * horizontal + rawValues.getHorizontal()) / count;
-        vertical = ((count - 1) * vertical + rawValues.getVertical()) / count;
+        horizontal = rawValues.getHorizontal();
+        vertical = rawValues.getVertical();
     }
 }

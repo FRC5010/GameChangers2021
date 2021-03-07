@@ -67,6 +67,9 @@ public class FlyWheelSubsystem extends SubsystemBase {
     layout.addNumber("Expected Velocity", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
         .withPosition(ControlConstants.shooterColumn, 3)
         .withProperties(Map.of("Max", 6000));
+    layout.addNumber("Manual RPM", ShooterConstants::getBaseSpeed).withWidget(BuiltInWidgets.kDial)
+        .withPosition(ControlConstants.shooterColumn, 3)
+        .withProperties(Map.of("Max", 6000));
 
     ShuffleboardLayout hoodLayout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
         .getLayout("Hood", BuiltInLayouts.kList)
@@ -97,11 +100,11 @@ public class FlyWheelSubsystem extends SubsystemBase {
     readyToShoot = false;
   }
 
-  public void aimToDistance(double distance) {
+  public void aimAtDistance(double distance) {
     distance = Double.valueOf(distance).intValue();
     double rpm = 0.0127223 * Math.pow(distance, 2) + 2.64334 * distance + 1759.04;
     spinUpWheelRPM(rpm);
-    //aimHood(distance);
+    aimHood(distance);
   }
 
   public void aimHood(double distance){
@@ -119,27 +122,15 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public void checkWheelSpeed() {
-    boolean readyToRPM;
-    boolean readyToAngle;
     // rpm tolerance?
     // changed 75 to 400
     double rpmRange = 25;
     if (readyToShoot) {
       rpmRange = 150;
     }
-    if (Math.abs(motor.getEncoder().getVelocity() - flyWheelSetPoint) < rpmRange) {
-      readyToRPM = true;
-    } else {
-      readyToRPM = false;
-    }
 
-    if (Math.abs(hoodPot.getAverageValue() - hoodSetPoint) < 25) {
-      readyToAngle = true;
-    } else {
-      readyToAngle = false;
-    }
-
-    readyToShoot = readyToAngle && readyToRPM;
+    readyToShoot = Math.abs(motor.getEncoder().getVelocity() - flyWheelSetPoint) < rpmRange && 
+      Math.abs(hoodPot.getAverageValue() - hoodSetPoint) < 25;
   }
 
   public void setWheelSpeed(double setPoint) {
@@ -166,10 +157,14 @@ public class FlyWheelSubsystem extends SubsystemBase {
       this.hood.set(0);
   }
 
-  public void PIDHood(){
-    double potValue = hoodPot.getAverageValue();
-    double error = potValue - hoodSetPoint;
-    hood.set(0.00076 * error);
+  public void PIDHood() {
+    if (!readyToShoot) {
+      double potValue = hoodPot.getAverageValue();
+      double error = potValue - hoodSetPoint;
+      hood.set(0.0008 * error);
+    } else {
+      hood.set(0);
+    }
   }
 
   public int getHoodValue(){
@@ -201,11 +196,11 @@ public class FlyWheelSubsystem extends SubsystemBase {
     this.flyWheelSetPoint = setPoint;
   }
 
-  public void incHoodSetPoint() {
+  public void decHoodSetPoint() {
     hoodSetPoint--;
   }
-  public void decHoodSetPoint() {
+
+  public void incHoodSetPoint() {
     hoodSetPoint++;
   }
-
 }

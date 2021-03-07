@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
-
 public class VisionLimeLight extends VisionSystem {
   /**
    * Creates a new LimeLightVision.
@@ -41,11 +39,9 @@ public class VisionLimeLight extends VisionSystem {
       // calculating distance
       double distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY + camAngle));
       rawValues = new VisionValues(valid, 0, 0, angleX, angleY, distance, horizontal, vertical);
-      count++;
-      count = Math.min(count, 20);
-      smoothedValues.addNewValues(rawValues, count, 20);
+    
+      smoothedValues.averageValues(rawValues, 20);
     } else {
-      count = 0;
       rawValues = new VisionValues();
       smoothedValues = new VisionValues();
     }

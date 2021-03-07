@@ -12,7 +12,7 @@ public class ShooterConstants {
     public static final double ballRadius = 0.09; // m
     public static final double innerPortRadius = 0.16; // m
     public static final double innerPortHeight = 2.500; // meters, measured from floor to center
-    public static double baseSpeed = 3000;
+    public static double baseSpeed = 1500;
     //4500 scores at 7 ft with distancetoRPM at 0
     //4750 scores at 10 ft (about 100 per feet until we hit 10 feet)
     //4830 scores at 12 ft

@@ -38,12 +38,12 @@ public class ShootBall extends CommandBase {
   public void execute() {
     double distance = 60;
 
-    if(visionSystem.isValidTarget())
+    if(visionSystem.isValidTarget()) {
       distance = visionSystem.getDistance();
-    
-    //rpm -= 200;
-    //test since flywheel never fully reaches setpoint
-    flyWheelSubsystem.aimToDistance(distance);
+      flyWheelSubsystem.aimAtDistance(distance);
+    } else {
+      flyWheelSubsystem.spinUpWheelRPM(ShooterConstants.getBaseSpeed());
+    }
 
     flyWheelSubsystem.checkWheelSpeed();
     if(flyWheelSubsystem.getReadyToShoot()){

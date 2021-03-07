@@ -43,6 +43,7 @@ public class FlyWheelMech {
     private JoystickButton hoodDown;
     private JoystickButton launch;
     private JoystickButton calibrate;
+    private JoystickButton lightToggle;
     private POVButton baseUp;
     private POVButton baseDown;
     private CANPIDController m_pidController;
@@ -55,6 +56,7 @@ public class FlyWheelMech {
         baseUp = new POVButton(driver, ControlConstants.incShooter);
         baseDown = new POVButton(driver, ControlConstants.decShooter);
         calibrate = new JoystickButton(driver, ControlConstants.calibrate);
+        lightToggle = new JoystickButton(driver, ControlConstants.toggleLed);
 
         hoodUp.whileHeld(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whileHeld(new ToggleHoodDown(flyWheelSubsystem));
@@ -63,6 +65,7 @@ public class FlyWheelMech {
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed += 10));
         baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed -= 10));
         calibrate.whenPressed(new CameraCalibrateShooter(vision));
+        lightToggle.whenPressed(new InstantCommand(() -> vision.setLight(!vision.isLightOn())));
     }
 
     public FlyWheelMech(Joystick driver, Joystick operator, VisionSystem vision){

@@ -56,7 +56,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
         .getLayout("Shooter", BuiltInLayouts.kList)
         .withPosition(ControlConstants.shooterColumn, 0)
         .withSize(2, 5);
-    layout.addNumber("Velocity", motor.getEncoder()::getVelocity)
+    layout.addNumber("Actual Velocity", motor.getEncoder()::getVelocity)
         .withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("Max", 6000))
         .withPosition(ControlConstants.shooterColumn, 1);
@@ -75,7 +75,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
         .getLayout("Hood", BuiltInLayouts.kList)
         .withPosition(ControlConstants.hoodColumn, 0)
         .withSize(2, 5);
-    hoodLayout.addNumber("Pot Position", this::getHoodValue)
+    hoodLayout.addNumber("Actual Position", this::getHoodValue)
         .withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("Max", ShooterConstants.hoodMax * 2))
         .withPosition(ControlConstants.hoodColumn, 1);
@@ -83,7 +83,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
         .withWidget(BuiltInWidgets.kBooleanBox)
         .withSize(2, 1)
         .withPosition(ControlConstants.hoodColumn, 2);
-    hoodLayout.addNumber("Hood Pos", this::getHoodSetPoint)
+    hoodLayout.addNumber("Expected Position", this::getHoodSetPoint)
         .withWidget(BuiltInWidgets.kDial)
         .withPosition(ControlConstants.hoodColumn, 3)
         .withProperties(Map.of("Max", ShooterConstants.hoodMax * 2));
@@ -147,7 +147,6 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public void end() {
     motor.set(0);
-    aimHood(30);
   }
 
   public void moveHood(double pow) {
@@ -161,7 +160,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
     if (!readyToShoot) {
       double potValue = hoodPot.getAverageValue();
       double error = potValue - hoodSetPoint;
-      hood.set(0.0008 * error);
+      hood.set(0.0015 * error);
     } else {
       hood.set(0);
     }

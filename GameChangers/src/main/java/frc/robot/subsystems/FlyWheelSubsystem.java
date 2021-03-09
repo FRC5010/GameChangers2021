@@ -121,16 +121,8 @@ public class FlyWheelSubsystem extends SubsystemBase {
     pidController.setReference(setPoint, ControlType.kVelocity);
   }
 
-  public void checkWheelSpeed() {
-    // rpm tolerance?
-    // changed 75 to 400
-    double rpmRange = 25;
-    if (readyToShoot) {
-      rpmRange = 150;
-    }
-
-    readyToShoot = Math.abs(motor.getEncoder().getVelocity() - flyWheelSetPoint) < rpmRange && 
-      Math.abs(hoodPot.getAverageValue() - hoodSetPoint) < 25;
+  public void determineIfReadyToShoot() {
+    readyToShoot = getFlyWheelReadyToShoot() && getHoodReadyToShoot();
   }
 
   public void setWheelSpeed(double setPoint) {
@@ -139,6 +131,14 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public boolean getReadyToShoot() {
     return readyToShoot;
+  }
+
+  public boolean getFlyWheelReadyToShoot() {
+    double rpmRange = 25;
+    if (readyToShoot) {
+      rpmRange = 150;
+    }
+    return Math.abs(motor.getEncoder().getVelocity() - flyWheelSetPoint) < rpmRange;
   }
 
   public boolean getHoodReadyToShoot() {

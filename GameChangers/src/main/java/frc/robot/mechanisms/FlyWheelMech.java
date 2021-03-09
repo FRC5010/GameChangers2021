@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
 import frc.robot.commands.CameraCalibrateShooter;
 import frc.robot.commands.HopperOmni;
+import frc.robot.commands.ManualShootBall;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.ToggleHoodDown;
 import frc.robot.commands.ToggleHoodUp;
@@ -42,6 +43,7 @@ public class FlyWheelMech {
     private JoystickButton hoodUp;
     private JoystickButton hoodDown;
     private JoystickButton launch;
+    private JoystickButton manualLaunch;
     private JoystickButton calibrate;
     private JoystickButton lightToggle;
     private POVButton baseUp;
@@ -53,6 +55,7 @@ public class FlyWheelMech {
         hoodUp = new JoystickButton(operator, ControlConstants.hoodUp);
         hoodDown = new JoystickButton(operator, ControlConstants.hoodDown);
         launch = new JoystickButton(operator, ControlConstants.launchButton);
+        manualLaunch = new JoystickButton(driver, ControlConstants.manualShootButton);
         baseUp = new POVButton(driver, ControlConstants.incShooter);
         baseDown = new POVButton(driver, ControlConstants.decShooter);
         calibrate = new JoystickButton(driver, ControlConstants.calibrate);
@@ -61,6 +64,7 @@ public class FlyWheelMech {
         hoodUp.whileHeld(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whileHeld(new ToggleHoodDown(flyWheelSubsystem));
         launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
+        launch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
 
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed += 10));
         baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed -= 10));

@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.mechanisms.ShooterConstants;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
 import frc.robot.subsystems.VisionSystem;
@@ -38,14 +37,10 @@ public class ShootBall extends CommandBase {
   public void execute() {
     double distance = 60;
 
-    if(visionSystem.isValidTarget()) {
-      distance = visionSystem.getDistance();
-      flyWheelSubsystem.aimAtDistance(distance);
-    } else {
-      flyWheelSubsystem.spinUpWheelRPM(ShooterConstants.getBaseSpeed());
-    }
+    distance = visionSystem.getDistance();
+    flyWheelSubsystem.aimAtDistance(distance);
 
-    flyWheelSubsystem.checkWheelSpeed();
+    flyWheelSubsystem.determineIfReadyToShoot();
     if(flyWheelSubsystem.getReadyToShoot()){
       hopperOmniSubsystem.SetOmniSpeed(-.9);
       hopperOmniSubsystem.SetHopperSpeed(.25);
@@ -53,17 +48,16 @@ public class ShootBall extends CommandBase {
       hopperOmniSubsystem.SetHopperSpeed(0);
       hopperOmniSubsystem.SetOmniSpeed(0);
     }
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (visionSystem.isValidTarget()) {
-      flyWheelSubsystem.aimHood(30);
-    }
+    flyWheelSubsystem.aimHood(30);
     flyWheelSubsystem.end();
-    flyWheelSubsystem.checkWheelSpeed();
+    flyWheelSubsystem.determineIfReadyToShoot();
+    hopperOmniSubsystem.SetHopperSpeed(0);
+    hopperOmniSubsystem.SetOmniSpeed(0);
   }
 
   // Returns true when the command should end.

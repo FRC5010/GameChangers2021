@@ -33,7 +33,7 @@ public class ControlConstants {
     //public static int winch1Axis = AxisNums.L_TRIGGER.ordinal();
     //public static int winch2Axis = AxisNums.R_TRIGGER.ordinal();
 
-    public static int intakeAimButton = ButtonNums.A_BUTTON.ordinal();
+    public static int manualShootButton = ButtonNums.A_BUTTON.ordinal();
     public static int shooterAimButton = ButtonNums.B_BUTTON.ordinal();
     public static int rotationControl = ButtonNums.X_BUTTON.ordinal();
     public static int positionControl = ButtonNums.Y_BUTTON.ordinal();

@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -58,7 +59,10 @@ public class Drive {
   public JoystickButton shooterAimButton;
 
   
-  public POVButton turnToAngleButton;
+  public POVButton incThrottleFactor;
+  public POVButton decThrottleFactor;
+  public POVButton incSteerFactor;
+  public POVButton decSteerFactor;
 
   public JoystickButton intakeDriveButton;
   public JoystickButton autoNavButton;
@@ -73,8 +77,27 @@ public class Drive {
     //intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 0));
     shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
     shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
-    //turnToAngleButton = new POVButton(driver, ControlConstants.turnToAngleButton);
-    //turnToAngleButton.whenPressed(new TurnToAngle(driveTrain, robotPose, shooterCam.getAngleX()));
+
+    incThrottleFactor = new POVButton(driver, ControlConstants.incThrottleFactor);
+    incThrottleFactor.whenPressed(new InstantCommand(
+      () -> DriveConstants.throttleFactor = Math.min(1, DriveConstants.throttleFactor + DriveConstants.drivingAdjustment)
+    ));
+
+    decThrottleFactor = new POVButton(driver, ControlConstants.decThrottleFactor);
+    decThrottleFactor.whenPressed(new InstantCommand(
+      () -> DriveConstants.throttleFactor = Math.max(0, DriveConstants.throttleFactor - DriveConstants.drivingAdjustment)
+    ));
+
+    incSteerFactor = new POVButton(driver, ControlConstants.incSteerFactor);
+    incSteerFactor.whenPressed(new InstantCommand(
+      () -> DriveConstants.steerFactor = Math.min(1, DriveConstants.steerFactor + DriveConstants.drivingAdjustment)
+    ));
+
+    decSteerFactor = new POVButton(driver, ControlConstants.decSteerFactor);
+    decSteerFactor.whenPressed(new InstantCommand(
+      () -> DriveConstants.steerFactor = Math.max(0, DriveConstants.steerFactor - DriveConstants.drivingAdjustment)
+    ));
+
     autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
     //autoNavButton.whenPressed(new GalacticSearch(driveTrain, intakeCam, robotPose, intakeSystem, shaftSubsystem));
     autoNavButton.whenPressed(new BouncePath());

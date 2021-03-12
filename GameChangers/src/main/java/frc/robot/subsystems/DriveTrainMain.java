@@ -4,9 +4,16 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ControlConstants;
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -14,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 import frc.robot.commands.Driving;
+import frc.robot.mechanisms.DriveConstants;
 
 public class DriveTrainMain extends SubsystemBase {
   /**
@@ -25,6 +33,19 @@ public class DriveTrainMain extends SubsystemBase {
   public DriveTrainMain(SpeedController left, SpeedController right, Joystick driver, Pose pose) {
     leftMaster = left;
     rightMaster = right;
+
+    ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
+      .getLayout("Driver", BuiltInLayouts.kList)
+      .withPosition(ControlConstants.driverColumn, 3)
+      .withSize(2, 5);
+    layout.addNumber("Throttle Factor", this::getThrottleFactorDisplay)
+      .withWidget(BuiltInWidgets.kDial)
+      .withProperties(Map.of("Max", 100, "Min", 0))
+      .withPosition(ControlConstants.driverColumn, 3);
+    layout.addNumber("Steer Factor", this::geSteerFactorDisplay)
+      .withWidget(BuiltInWidgets.kDial)
+      .withProperties(Map.of("Max", 100, "Min", 0))
+      .withPosition(ControlConstants.driverColumn, 5);
 
   //  pdp = new PowerDistributionPanel();
     setDefaultCommand(new Driving(this, driver));
@@ -41,12 +62,19 @@ public class DriveTrainMain extends SubsystemBase {
     rightMaster.setVoltage(rightVolts);
   }
 
-  public void arcadeDrive(double fPow, double tPow) {
-    tPow *= 0.7;
-    fPow *= 0.8;
+  public double getThrottleFactorDisplay() {
+    return DriveConstants.throttleFactor * 100;
+  }
+  public double geSteerFactorDisplay() {
+    return DriveConstants.steerFactor * 100;
+  }
+
+  public void arcadeDrive(double throttle, double steer) {
+    steer *= DriveConstants.steerFactor;
+    throttle *= DriveConstants.throttleFactor;
     //0.7 is set currently for Michael's practice runs
-    leftMaster.set(fPow + tPow);
-    rightMaster.set(fPow - tPow);
+    leftMaster.set(throttle + steer);
+    rightMaster.set(throttle - steer);
   }
 
   public double scaleInputs(double input) {

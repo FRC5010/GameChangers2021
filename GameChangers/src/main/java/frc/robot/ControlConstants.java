@@ -42,7 +42,10 @@ public class ControlConstants {
     public static int calibrate = ButtonNums.START_BUTTON.ordinal(); 
     public static int manualRotation = ButtonNums.BACK_BUTTON.ordinal(); // Implement
     public static int toggleLed = ButtonNums.LEFT_STICK_BUTT.ordinal();
-    public static int turnToAngleButton = POVDirs.DOWN.ordinal() * 90;
+    public static int incThrottleFactor = POVDirs.UP.ordinal() * 90;
+    public static int decThrottleFactor = POVDirs.DOWN.ordinal() * 90;
+    public static int decSteerFactor = POVDirs.LEFT.ordinal() * 90;
+    public static int incSteerFactor = POVDirs.RIGHT.ordinal() * 90;
 
     //Operator
     public static int leftArmDeploy = AxisNums.LEFT_Y.ordinal(); // Implement
@@ -70,9 +73,9 @@ public class ControlConstants {
     public static int shooterColumn = 0;
     public static int hoodColumn = 2;
 
-    public static int spinnerColumn = 4;
+    public static int driverColumn = 4;
     public static int autoColumn = 4;
-    public static int shooterVisionColumn = 7;
+    public static int shooterVisionColumn = 6;
 
     public static int autoNavButton = ButtonNums.X_BUTTON.ordinal();
     public static int driveTrainCurrentLimit = 38;
@@ -86,7 +89,6 @@ public class ControlConstants {
             heightModeToggle = ButtonNums.LEFT_BUMPER.ordinal();
             calibrate = ButtonNums.START_BUTTON.ordinal(); 
             toggleLed = ButtonNums.LEFT_STICK_BUTT.ordinal();
-            turnToAngleButton = POVDirs.DOWN.ordinal() * 90;
         
             outtakeAxis = AxisNums.L_TRIGGER.ordinal() ;
             intakeAxis = AxisNums.R_TRIGGER.ordinal();

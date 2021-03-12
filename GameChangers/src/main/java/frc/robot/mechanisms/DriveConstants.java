@@ -29,6 +29,10 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class DriveConstants {
+    public static double throttleFactor = 0.5;    
+    public static double steerFactor = 0.5;    
+    public static double drivingAdjustment = 0.05;
+    
     public static final double ksVolts = 0.18;
     public static final double kvVoltSecondsPerMeter = 1.07;
     public static final double kaVoltSecondsSquaredPerMeter = 0.213;

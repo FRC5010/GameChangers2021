@@ -55,15 +55,15 @@ public class FlyWheelMech {
         hoodUp = new JoystickButton(operator, ControlConstants.hoodUp);
         hoodDown = new JoystickButton(operator, ControlConstants.hoodDown);
         launch = new JoystickButton(operator, ControlConstants.launchButton);
+        baseUp = new POVButton(operator, ControlConstants.incShooter);
+        baseDown = new POVButton(operator, ControlConstants.decShooter);
         manualLaunch = new JoystickButton(driver, ControlConstants.manualShootButton);
-        baseUp = new POVButton(driver, ControlConstants.incShooter);
-        baseDown = new POVButton(driver, ControlConstants.decShooter);
         calibrate = new JoystickButton(driver, ControlConstants.calibrate);
         lightToggle = new JoystickButton(driver, ControlConstants.toggleLed);
 
         hoodUp.whileHeld(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whileHeld(new ToggleHoodDown(flyWheelSubsystem));
-        launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
+        manualLaunch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
         launch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
 
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed += 10));

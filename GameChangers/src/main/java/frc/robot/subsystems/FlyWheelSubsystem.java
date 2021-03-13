@@ -102,19 +102,19 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public void aimAtDistance(double distance) {
     distance = Double.valueOf(distance).intValue();
-    double rpm = 0.0127223 * Math.pow(distance, 2) + 2.64334 * distance + 1759.04;
+    double rpm = 0.0151745 * Math.pow(distance, 2) + 1.02645 * distance + 2019.63;
     spinUpWheelRPM(rpm);
     aimHood(distance);
   }
 
   public void aimHood(double distance){
-    hoodSetPoint = 0.0075 * Math.pow(distance, 2) + -6.05 * distance + 1873.13;
+    hoodSetPoint = 0.00593432 * Math.pow(distance, 2) + -4.70703 * distance + 1723.13;
     hoodSetPoint = Math.max(620, hoodSetPoint);
     hoodSetPoint = Math.min(1950, hoodSetPoint);
   }
 
   // data for new flywheel distance to hood and rpm
-  // https://www.desmos.com/calculator/3redjlm50e
+  // https://www.desmos.com/calculator/cis4g0iqjn
   public void spinUpWheelRPM(double setPoint) {
     this.flyWheelSetPoint = setPoint;
     pidController.setFF(ShooterConstants.kS / setPoint + ShooterConstants.kV);

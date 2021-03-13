@@ -21,6 +21,7 @@ import frc.robot.ControlConstants;
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 import frc.robot.commands.Driving;
+import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.DriveConstants;
 
 public class DriveTrainMain extends SubsystemBase {
@@ -46,6 +47,9 @@ public class DriveTrainMain extends SubsystemBase {
       .withWidget(BuiltInWidgets.kDial)
       .withProperties(Map.of("Max", 100, "Min", 0))
       .withPosition(ControlConstants.driverColumn, 5);
+      layout.addBoolean("Drive Direction", this::getDriveDirection)
+      .withWidget(BuiltInWidgets.kBooleanBox)
+      .withPosition(ControlConstants.driverColumn, 1);
 
   //  pdp = new PowerDistributionPanel();
     setDefaultCommand(new Driving(this, driver));
@@ -69,9 +73,13 @@ public class DriveTrainMain extends SubsystemBase {
     return DriveConstants.steerFactor * 100;
   }
 
+  public boolean getDriveDirection(){
+    return DriveConstants.driveInversion == 1;
+  }
+
   public void arcadeDrive(double throttle, double steer) {
     steer *= DriveConstants.steerFactor;
-    throttle *= DriveConstants.throttleFactor;
+    throttle *= DriveConstants.throttleFactor * DriveConstants.driveInversion;
     //0.7 is set currently for Michael's practice runs
     leftMaster.set(throttle + steer);
     rightMaster.set(throttle - steer);

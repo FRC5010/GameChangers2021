@@ -85,8 +85,12 @@ public class FlyWheelMech {
 
         hopperMotor = new CANSparkMax(10, MotorType.kBrushless);
         HOmniMotor = new CANSparkMax(5, MotorType.kBrushless);
+        hopperMotor.setSmartCurrentLimit(40);
+        HOmniMotor.setSmartCurrentLimit(40);
+
 
         hood = new CANSparkMax(8,MotorType.kBrushless);
+        hood.setSmartCurrentLimit(40);
 
         m_pidController = m1.getPIDController();
 

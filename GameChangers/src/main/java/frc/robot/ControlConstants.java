@@ -41,7 +41,8 @@ public class ControlConstants {
     public static int spinDeploy = ButtonNums.RIGHT_BUMPER.ordinal();
     public static int calibrate = ButtonNums.START_BUTTON.ordinal(); 
     public static int manualRotation = ButtonNums.BACK_BUTTON.ordinal(); // Implement
-    public static int toggleLed = ButtonNums.LEFT_STICK_BUTT.ordinal();
+    public static int toggleLed = ButtonNums.RIGHT_STICK_BUTT.ordinal();
+    public static int toggleDrive = ButtonNums.LEFT_STICK_BUTT.ordinal();
     public static int incThrottleFactor = POVDirs.UP.ordinal() * 90;
     public static int decThrottleFactor = POVDirs.DOWN.ordinal() * 90;
     public static int decSteerFactor = POVDirs.LEFT.ordinal() * 90;

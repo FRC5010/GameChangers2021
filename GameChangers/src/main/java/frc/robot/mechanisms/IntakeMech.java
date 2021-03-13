@@ -33,6 +33,10 @@ public class IntakeMech {
         intakeMotor = new CANSparkMax(12, MotorType.kBrushless);
         intakeMotor.setInverted(true);
 
+        m9.setSmartCurrentLimit(40);
+        m11.setSmartCurrentLimit(40);
+        intakeMotor.setSmartCurrentLimit(40);
+
         IntakeSubsystem intakeSubsystem = new IntakeSubsystem(m9, intakeMotor);
 
         intakeSubsystem.setDefaultCommand(new IntakeBalls(intakeSubsystem, operator));

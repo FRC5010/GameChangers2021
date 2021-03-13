@@ -54,7 +54,7 @@ public class AimWithVision extends CommandBase {
     this.driver = null;
     this.targetAngle = targetAngle;
     this.driveSpeed = driveSpeed;
-    this.p = 0.025;
+    this.p = 0.01;
     this.d = 2000;
     addRequirements(drive);
     addRequirements(vision);

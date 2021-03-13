@@ -29,6 +29,7 @@ import frc.robot.ControlConstants;
 import frc.robot.Robot;
 import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
+import frc.robot.commands.SwitchDriveDirection;
 import frc.robot.commands.auto.BarrelRace;
 import frc.robot.commands.auto.BouncePath;
 import frc.robot.commands.auto.SlalomRun;
@@ -64,6 +65,8 @@ public class Drive {
   public POVButton incSteerFactor;
   public POVButton decSteerFactor;
 
+  public JoystickButton switchDirection;
+
   public JoystickButton intakeDriveButton;
   public JoystickButton autoNavButton;
 
@@ -97,6 +100,10 @@ public class Drive {
     decSteerFactor.whenPressed(new InstantCommand(
       () -> DriveConstants.steerFactor = Math.max(0, DriveConstants.steerFactor - DriveConstants.drivingAdjustment)
     ));
+
+    switchDirection = new JoystickButton(driver, ControlConstants.toggleDrive);
+    switchDirection.whenPressed(new SwitchDriveDirection(driver));
+
 
     autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
     //autoNavButton.whenPressed(new GalacticSearch(driveTrain, intakeCam, robotPose, intakeSystem, shaftSubsystem));

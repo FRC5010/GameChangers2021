@@ -63,8 +63,8 @@ public class FlyWheelMech {
 
         hoodUp.whileHeld(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whileHeld(new ToggleHoodDown(flyWheelSubsystem));
-        manualLaunch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
-        launch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
+    //    manualLaunch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
+        launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
 
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed += 10));
         baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed -= 10));

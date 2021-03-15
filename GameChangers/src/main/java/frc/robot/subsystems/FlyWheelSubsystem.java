@@ -45,6 +45,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
     this.motor = m1;
     this.hood = hood;
     hoodPot = new AnalogInput(0);
+    hoodSetPoint = hoodPot.getValue();
     pidController = m_pidController;
 
     pidController.setP(ShooterConstants.kP);

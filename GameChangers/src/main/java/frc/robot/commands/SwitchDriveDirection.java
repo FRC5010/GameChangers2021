@@ -4,10 +4,9 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.DriveConstants;
 
 public class SwitchDriveDirection extends CommandBase {

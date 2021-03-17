@@ -54,16 +54,17 @@ public class FlyWheelMech {
     private void configurebuttonBindings(){
         hoodUp = new JoystickButton(operator, ControlConstants.hoodUp);
         hoodDown = new JoystickButton(operator, ControlConstants.hoodDown);
-        launch = new JoystickButton(operator, ControlConstants.launchButton);
         baseUp = new POVButton(operator, ControlConstants.incShooter);
         baseDown = new POVButton(operator, ControlConstants.decShooter);
-        manualLaunch = new JoystickButton(driver, ControlConstants.manualShootButton);
+        manualLaunch = new JoystickButton(operator, ControlConstants.manualShootButton);
+
+        launch = new JoystickButton(driver, ControlConstants.launchButton);
         calibrate = new JoystickButton(driver, ControlConstants.calibrate);
         lightToggle = new JoystickButton(driver, ControlConstants.toggleLed);
 
         hoodUp.whileHeld(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whileHeld(new ToggleHoodDown(flyWheelSubsystem));
-    //    manualLaunch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
+        manualLaunch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
         launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
 
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed += 10));

@@ -31,8 +31,6 @@ import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.SwitchDriveDirection;
 import frc.robot.commands.auto.BarrelRace;
-import frc.robot.commands.auto.BouncePath;
-import frc.robot.commands.auto.SlalomRun;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
 import frc.robot.subsystems.VisionSystem;

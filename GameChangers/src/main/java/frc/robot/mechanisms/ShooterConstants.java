@@ -13,6 +13,15 @@ public class ShooterConstants {
     public static final double innerPortRadius = 0.16; // m
     public static final double innerPortHeight = 2.500; // meters, measured from floor to center
     public static double baseSpeed = 1500;
+    public static double hoodMin = 2431;
+    public static double hoodMax = 3510;
+    public static double hoodC = -2.323;
+    public static double hoodD = hoodMax;
+    public static double hoodMaxDisplay = hoodMax;
+    public static double hoodMove = 10;
+
+    public static double rpmC = 7.124;
+    public static double rpmD = 1531;
     //4500 scores at 7 ft with distancetoRPM at 0
     //4750 scores at 10 ft (about 100 per feet until we hit 10 feet)
     //4830 scores at 12 ft
@@ -40,6 +49,4 @@ public class ShooterConstants {
         kMinOutput = -1;
         maxRPM = 5800;
     }
-
-    public static int hoodMax = 2000;
 }

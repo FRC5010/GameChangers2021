@@ -62,8 +62,8 @@ public class FlyWheelMech {
         calibrate = new JoystickButton(driver, ControlConstants.calibrate);
         lightToggle = new JoystickButton(driver, ControlConstants.toggleLed);
 
-        hoodUp.whileHeld(new ToggleHoodUp(flyWheelSubsystem));
-        hoodDown.whileHeld(new ToggleHoodDown(flyWheelSubsystem));
+        hoodUp.whenPressed(new ToggleHoodUp(flyWheelSubsystem));
+        hoodDown.whenPressed(new ToggleHoodDown(flyWheelSubsystem));
         manualLaunch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
         launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
 

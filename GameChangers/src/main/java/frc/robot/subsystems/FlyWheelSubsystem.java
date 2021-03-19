@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.ControlConstants;
@@ -78,7 +79,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
         .withSize(2, 5);
     hoodLayout.addNumber("Actual Position", this::getHoodValue)
         .withWidget(BuiltInWidgets.kDial)
-        .withProperties(Map.of("Max", ShooterConstants.hoodMax * 2))
+        .withProperties(Map.of("Max", ShooterConstants.hoodMaxDisplay * 2))
         .withPosition(ControlConstants.hoodColumn, 1);
     hoodLayout.addBoolean("Hood Ready", this::getHoodReadyToShoot)
         .withWidget(BuiltInWidgets.kBooleanBox)
@@ -87,7 +88,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
     hoodLayout.addNumber("Expected Position", this::getHoodSetPoint)
         .withWidget(BuiltInWidgets.kDial)
         .withPosition(ControlConstants.hoodColumn, 3)
-        .withProperties(Map.of("Max", ShooterConstants.hoodMax * 2));
+        .withProperties(Map.of("Max", ShooterConstants.hoodMaxDisplay * 2));
 
     ShuffleboardLayout layoutDiag = Shuffleboard.getTab(ControlConstants.SBTabDiagnostics).getLayout("Shooter",
         BuiltInLayouts.kList);
@@ -103,15 +104,14 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public void aimAtDistance(double distance) {
     distance = Double.valueOf(distance).intValue();
-    double rpm = 0.0151745 * Math.pow(distance, 2) + 1.02645 * distance + 2019.63;
+    double rpm = ShooterConstants.rpmC * distance + ShooterConstants.rpmD;
     spinUpWheelRPM(rpm);
     aimHood(distance);
   }
 
   public void aimHood(double distance){
-    hoodSetPoint = 0.00593432 * Math.pow(distance, 2) + -4.70703 * distance + 1723.13;
-    hoodSetPoint = Math.max(620, hoodSetPoint);
-    hoodSetPoint = Math.min(1950, hoodSetPoint);
+    hoodSetPoint = ShooterConstants.hoodC * distance + ShooterConstants.hoodD;
+    //PIDHood();
   }
 
   // data for new flywheel distance to hood and rpm
@@ -143,7 +143,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public boolean getHoodReadyToShoot() {
-    return Math.abs(hoodPot.getAverageValue() - hoodSetPoint) < 25;
+    return Math.abs(hoodPot.getAverageValue() - hoodSetPoint) < ShooterConstants.hoodMove;
   }
 
   public void end() {
@@ -151,13 +151,15 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public void moveHood(double pow) {
-    if(hoodPot.getAverageValue() > 650 || hoodPot.getAverageValue() < 1900)
+    if(hoodPot.getAverageValue() > ShooterConstants.hoodMin || hoodPot.getAverageValue() < ShooterConstants.hoodMax)
       this.hood.set(pow);
     else
       this.hood.set(0);
   }
 
   public void PIDHood() {
+    hoodSetPoint = Math.max(ShooterConstants.hoodMin, hoodSetPoint);
+    hoodSetPoint = Math.min(ShooterConstants.hoodMax, hoodSetPoint);
     if (!readyToShoot) {
       double potValue = hoodPot.getAverageValue();
       double error = potValue - hoodSetPoint;
@@ -171,13 +173,12 @@ public class FlyWheelSubsystem extends SubsystemBase {
     return hoodPot.getAverageValue();
   }
 
-  public int getHoodValueDisplay(){
-    return ShooterConstants.hoodMax - hoodPot.getAverageValue();
+  public double getHoodValueDisplay(){
+    return (ShooterConstants.hoodMaxDisplay - hoodPot.getAverageValue());
   }
 
   @Override
   public void periodic() {
-    PIDHood();
   }
 
   public double getSetPoint() {
@@ -189,7 +190,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public double getHoodSetPointDisplay() {
-    return ShooterConstants.hoodMax - hoodSetPoint;
+    return ShooterConstants.hoodMaxDisplay - hoodSetPoint;
   }
 
   public void setPoint(double setPoint) {
@@ -197,10 +198,10 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public void decHoodSetPoint() {
-    hoodSetPoint--;
+    hoodSetPoint -= ShooterConstants.hoodMove;
   }
 
   public void incHoodSetPoint() {
-    hoodSetPoint++;
+    hoodSetPoint += ShooterConstants.hoodMove;
   }
 }

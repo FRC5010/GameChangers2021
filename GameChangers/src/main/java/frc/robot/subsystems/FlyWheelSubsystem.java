@@ -111,11 +111,11 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public void aimHood(double distance){
     hoodSetPoint = ShooterConstants.hoodC * distance + ShooterConstants.hoodD;
-    //PIDHood();
+    PIDHood();
   }
 
   // data for new flywheel distance to hood and rpm
-  // https://www.desmos.com/calculator/cis4g0iqjn
+  // https://www.desmos.com/calculator/e8sdi68bmn
   public void spinUpWheelRPM(double setPoint) {
     this.flyWheelSetPoint = setPoint;
     pidController.setFF(ShooterConstants.kS / setPoint + ShooterConstants.kV);

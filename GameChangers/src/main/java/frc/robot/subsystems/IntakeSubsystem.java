@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -13,28 +14,48 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.ControlConstants;
+import frc.robot.mechanisms.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private CANSparkMax m9;
   private CANSparkMax m12;
+  private CANPIDController pid;
 
   public IntakeSubsystem(CANSparkMax m9, CANSparkMax m12) { 
     this.m9 = m9;
     this.m12 = m12;
+    pid = m9.getPIDController();
+
+    pid.setP(IntakeConstants.intakeP);
+    pid.setD(IntakeConstants.intakeD);
+    pid.setFF(IntakeConstants.intakeFF);
+    pid.setOutputRange(IntakeConstants.kMinOutput, IntakeConstants.kMaxOutput);
+
+    int smartMotionSlot = 0;
+    pid.setSmartMotionMaxVelocity(IntakeConstants.maxVel, smartMotionSlot);
+    pid.setSmartMotionMinOutputVelocity(IntakeConstants.minVel, smartMotionSlot);
+    pid.setSmartMotionMaxAccel(IntakeConstants.maxAccel, smartMotionSlot);
+    pid.setSmartMotionAllowedClosedLoopError(IntakeConstants.allowedErr, smartMotionSlot);
+
     ShuffleboardLayout layout = Shuffleboard.getTab("Intake")
       .getLayout("Intaker", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 1).withSize(2,5);
     layout.addNumber("Velocity", m12.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
-      .withProperties(Map.of("Max", 6000)).withPosition(ControlConstants.shooterColumn, 1);
+      .withProperties(Map.of("Max", 15000, "Min", -15000)).withPosition(ControlConstants.shooterColumn, 3);
     layout.addNumber("Current", m12::getOutputCurrent).withWidget(BuiltInWidgets.kDial)
-      .withProperties(Map.of("Max", 6000)).withPosition(ControlConstants.shooterColumn, 1);
+      .withProperties(Map.of("Max", 120)).withPosition(ControlConstants.shooterColumn, 5);
+    layout.addNumber("Encoder Value", m9.getEncoder()::getPosition)
+      .withPosition(ControlConstants.shooterColumn, 1);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void setIntakePosition(){
+    
   }
 
   public void spin(double power){

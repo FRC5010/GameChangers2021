@@ -43,9 +43,10 @@ public class RobotContainer {
     shooterVision = new VisionLimeLight("limelight-shooter", 19.25, 14.562694, 90, ControlConstants.shooterVisionColumn);
     driver = new Joystick(0);
     operator = new Joystick(1);
+    intakeMech = new IntakeMech(operator);
     drive = new Drive(driver,shooterVision);
     flyWheelMech = new FlyWheelMech(driver, operator, shooterVision);
-    intakeMech = new IntakeMech(operator);
+    
 
     configureButtonBindings();
   }

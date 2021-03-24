@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 
@@ -16,17 +17,20 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ControlConstants;
 import frc.robot.mechanisms.IntakeConstants;
+import frc.robot.mechanisms.IntakeMech;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private CANSparkMax m9;
   private CANSparkMax m12;
   private CANPIDController pid;
+  private CANEncoder intakeEncoder;
 
   public IntakeSubsystem(CANSparkMax m9, CANSparkMax m12) { 
     this.m9 = m9;
     this.m12 = m12;
     pid = m9.getPIDController();
+    intakeEncoder = m9.getEncoder();
 
     pid.setP(IntakeConstants.intakeP);
     pid.setD(IntakeConstants.intakeD);
@@ -45,7 +49,7 @@ public class IntakeSubsystem extends SubsystemBase {
       .withProperties(Map.of("Max", 15000, "Min", -15000)).withPosition(ControlConstants.shooterColumn, 3);
     layout.addNumber("Current", m12::getOutputCurrent).withWidget(BuiltInWidgets.kDial)
       .withProperties(Map.of("Max", 120)).withPosition(ControlConstants.shooterColumn, 5);
-    layout.addNumber("Encoder Value", m9.getEncoder()::getPosition)
+    layout.addNumber("Encoder Value", intakeEncoder::getPosition)
       .withPosition(ControlConstants.shooterColumn, 1);
   }
 
@@ -63,7 +67,19 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void moveIntake(double power){
-    m9.set(power);
+    double encoderVal = intakeEncoder.getPosition();
+    
+    if(encoderVal <= IntakeMech.intakeMax && encoderVal >= IntakeMech.intakeMin){
+      if(encoderVal <= IntakeMech.intakeFastMax && encoderVal >= IntakeMech.intakeFastMin){
+        m9.set(power);
+      }else{
+        double error = Math.min(encoderVal-IntakeMech.intakeFastMax, encoderVal-IntakeMech.intakeFastMin);
+        m9.set(power * (error/100) );
+      }
+    }else{
+      m9.set(0);
+    }
+    
   }
 
   public void stop(){

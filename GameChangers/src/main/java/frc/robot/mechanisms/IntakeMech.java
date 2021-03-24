@@ -25,6 +25,10 @@ public class IntakeMech {
     private JoystickButton intakeDown;
 
     private static IntakeSubsystem intakeSubsystem;
+    public static double intakeMax = 0;
+    public static double intakeMin = -65;
+    public static double intakeFastMax = -10;
+    public static double intakeFastMin= -55;
 
     public IntakeMech(Joystick operator){
         this.operator = operator;

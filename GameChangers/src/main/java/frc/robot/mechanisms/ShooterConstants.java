@@ -12,15 +12,15 @@ public class ShooterConstants {
     public static final double ballRadius = 0.09; // m
     public static final double innerPortRadius = 0.16; // m
     public static final double innerPortHeight = 2.500; // meters, measured from floor to center
-    public static double baseSpeed = 1500;
+    public static double baseSpeed = 2500; //1500;
 
     // **** CHANGE THIS NUMBER IF THE POT IS RESET ***** 
-    public static double hoodMax = 2008;
-    public static double hoodMin = hoodMax - 1240;
+    public static double hoodMax = 1042;
+    public static double hoodMin = hoodMax - 833;
     public static double hoodC = -3;
     public static double hoodD = hoodMax - 424;
     public static double hoodMaxDisplay = hoodMax;
-    public static double hoodMove = 25;
+    public static double hoodMove = 10;
 
     public static double rpmC = 7.124;
     public static double rpmD = 1531;

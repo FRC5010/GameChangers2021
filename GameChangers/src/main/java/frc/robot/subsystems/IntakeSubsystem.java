@@ -68,13 +68,21 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void moveIntake(double power){
     double encoderVal = intakeEncoder.getPosition();
-    
+    //double error = Math.min(Math.abs(encoderVal-IntakeMech.intakeFastMax), Math.abs(encoderVal-IntakeMech.intakeFastMin));
+    double error;
+    double finPow;
+    // encoderVal <= IntakeMech.intakeFastMax && encoderVal >= IntakeMech.intakeFastMin
+
     if(encoderVal <= IntakeMech.intakeMax && encoderVal >= IntakeMech.intakeMin){
-      if(encoderVal <= IntakeMech.intakeFastMax && encoderVal >= IntakeMech.intakeFastMin){
-        m9.set(power);
-      }else{
-        double error = Math.min(encoderVal-IntakeMech.intakeFastMax, encoderVal-IntakeMech.intakeFastMin);
-        m9.set(power * (error/100) );
+      if(power > 0){
+        error = encoderVal-IntakeMech.intakeMax;
+        finPow = encoderVal <= IntakeMech.intakeFastMax ? power : power * (error/100);
+        m9.set(finPow);
+
+      }else if(power < 0){
+        error = encoderVal-IntakeMech.intakeMin;
+        finPow = encoderVal >= IntakeMech.intakeFastMin ? power : power * (error/100);
+        m9.set(finPow);
       }
     }else{
       m9.set(0);

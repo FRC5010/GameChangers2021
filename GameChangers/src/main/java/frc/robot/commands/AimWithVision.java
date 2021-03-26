@@ -39,8 +39,8 @@ public class AimWithVision extends CommandBase {
     this.vision = vision;
     this.driver = driver;
     this.targetAngle = targetAngle;
-    this.p = 0.025;
-    this.d = 2000;
+    this.p = 0.0075;
+    this.d = 0.01 ;
     addRequirements(drive);
     addRequirements(vision);
 
@@ -84,7 +84,7 @@ public class AimWithVision extends CommandBase {
       lastError = error;
       error = vision.getAngleX() - targetAngle;
       SmartDashboard.putNumber("Vision Aim Error", error);
-      double correction = error * p + (error - lastError) / (currentTime - lastTime) * d;
+      double correction = error * p + ((error - lastError) / (currentTime - lastTime)) * d;
       //double correction = error * p;
       SmartDashboard.putNumber("Correction", correction);
       if (driver != null) {

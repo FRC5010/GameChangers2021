@@ -83,6 +83,8 @@ public class IntakeSubsystem extends SubsystemBase {
         error = encoderVal-IntakeMech.intakeMin;
         finPow = encoderVal >= IntakeMech.intakeFastMin ? power : power * (error/100);
         m9.set(finPow);
+      }else{
+        m9.set(0);
       }
     }else{
       m9.set(0);

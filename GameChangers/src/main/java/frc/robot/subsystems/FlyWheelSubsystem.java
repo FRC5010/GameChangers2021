@@ -139,7 +139,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
     if (readyToShoot) {
       rpmRange = 150;
     }
-    return Math.abs(motor.getEncoder().getVelocity() - flyWheelSetPoint) < rpmRange;
+    return (flyWheelSetPoint - motor.getEncoder().getVelocity()) < rpmRange;
   }
 
   public boolean getHoodReadyToShoot() {
@@ -148,6 +148,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public void end() {
     motor.set(0);
+    hood.set(0);
   }
 
   public void moveHood(double pow) {
@@ -165,7 +166,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
       double error = potValue - hoodSetPoint;
       hood.set(0.0015 * error);
     } else {
-      hood.set(0);
+      hood.set(-0.01);
     }
   }
 

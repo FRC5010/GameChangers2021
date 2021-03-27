@@ -39,8 +39,8 @@ public class AimWithVision extends CommandBase {
     this.vision = vision;
     this.driver = driver;
     this.targetAngle = targetAngle;
-    this.p = 0.0075;
-    this.d = 0.01 ;
+    this.p = 0.025;
+    this.d = 0.1 ;
     addRequirements(drive);
     addRequirements(vision);
 
@@ -54,8 +54,8 @@ public class AimWithVision extends CommandBase {
     this.driver = null;
     this.targetAngle = targetAngle;
     this.driveSpeed = driveSpeed;
-    this.p = 0.01;
-    this.d = 2000;
+    this.p = 0.0065;
+    this.d = 0.085;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -63,7 +63,6 @@ public class AimWithVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println(" aim with vison start");
     vision.setLight(true);
     timeTargetFound = RobotController.getFPGATime();
     currentTime = RobotController.getFPGATime();
@@ -84,23 +83,21 @@ public class AimWithVision extends CommandBase {
       lastError = error;
       error = vision.getAngleX() - targetAngle;
       SmartDashboard.putNumber("Vision Aim Error", error);
-      double correction = error * p + ((error - lastError) / (currentTime - lastTime)) * d;
-      //double correction = error * p;
+      double correction = error * p;
       SmartDashboard.putNumber("Correction", correction);
+      correction = Math.max(-d, Math.min(d, correction));
       if (driver != null) {
         driveSpeed = drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle));
       }
       drive.arcadeDrive(driveSpeed, correction);
       lastTime = currentTime;
       SmartDashboard.putNumber(vision.getName() + "VisionError", error);
-      // SmartDashboard.putNumber(vision.getName() + "VisionCorrection", correction);
     }
   }
 
   // Called once the command ends or is interrupted
   @Override
   public void end(boolean interrupted) {
-    System.out.println("aim with vision ended");
     drive.arcadeDrive(0, 0);
   }
 

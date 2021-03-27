@@ -15,14 +15,14 @@ public class ShooterConstants {
     public static double baseSpeed = 2500; //1500;
 
     // **** CHANGE THIS NUMBER IF THE POT IS RESET ***** 
-    public static double hoodMax = 1680;
+    public static double hoodMax = 2078;
     public static double hoodMin = hoodMax - 1103;
-    public static double hoodC = -2.5;
+    public static double hoodC = -2.55;
     public static double hoodD = hoodMax - 424;
     public static double hoodMaxDisplay = hoodMax;
     public static double hoodMove = 10;
 
-    public static double rpmC = 7.124;
+    public static double rpmC = 7.5;//7.124;
     public static double rpmD = 1531;
     //4500 scores at 7 ft with distancetoRPM at 0
     //4750 scores at 10 ft (about 100 per feet until we hit 10 feet)

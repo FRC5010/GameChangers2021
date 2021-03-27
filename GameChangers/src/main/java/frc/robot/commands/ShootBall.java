@@ -42,8 +42,8 @@ public class ShootBall extends CommandBase {
 
     flyWheelSubsystem.determineIfReadyToShoot();
     if(flyWheelSubsystem.getReadyToShoot()){
-      hopperOmniSubsystem.SetOmniSpeed(-.9);
-      hopperOmniSubsystem.SetHopperSpeed(-.25);
+      hopperOmniSubsystem.SetOmniSpeed(-1);
+      hopperOmniSubsystem.SetHopperSpeed(-.15);
     }else{
       hopperOmniSubsystem.SetHopperSpeed(0);
       hopperOmniSubsystem.SetOmniSpeed(0);

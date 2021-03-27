@@ -89,10 +89,14 @@ public class FlyWheelSubsystem extends SubsystemBase {
         .withWidget(BuiltInWidgets.kDial)
         .withPosition(ControlConstants.hoodColumn, 3)
         .withProperties(Map.of("Max", ShooterConstants.hoodMaxDisplay * 2));
-
+        
     ShuffleboardLayout layoutDiag = Shuffleboard.getTab(ControlConstants.SBTabDiagnostics).getLayout("Shooter",
         BuiltInLayouts.kList);
     layoutDiag.addNumber("HoodPot", hoodPot::getAverageValue);
+    layoutDiag.addNumber("Hood Max", () -> ShooterConstants.hoodMax);
+    layoutDiag.addNumber("Hood Min", () -> ShooterConstants.hoodMin);
+    layoutDiag.addNumber("Hood Scalar", () -> ShooterConstants.hoodC);
+    layoutDiag.addNumber("Hood Base", () -> ShooterConstants.hoodD);
     layoutDiag.addNumber("Shooter Temp", motor::getMotorTemperature);
     layoutDiag.addNumber("Shooter Current", motor::getOutputCurrent);
   }
@@ -164,7 +168,9 @@ public class FlyWheelSubsystem extends SubsystemBase {
     if (!readyToShoot) {
       double potValue = hoodPot.getAverageValue();
       double error = potValue - hoodSetPoint;
-      hood.set(0.0015 * error);
+      double power = 0.0015 * error;
+      power = Math.min(0.2, Math.max(-0.2, power));
+      hood.set(power);
     } else {
       hood.set(-0.01);
     }

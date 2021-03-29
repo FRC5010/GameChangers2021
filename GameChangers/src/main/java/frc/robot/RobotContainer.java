@@ -10,12 +10,19 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.HopperOmni;
+import frc.robot.commands.auto.DetermineGalacticPath;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.FlyWheelMech;
 import frc.robot.mechanisms.IntakeMech;
 import frc.robot.subsystems.VisionLimeLight;
+import frc.robot.subsystems.VisionLimeLightH;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -26,6 +33,7 @@ import frc.robot.subsystems.VisionLimeLight;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Joystick driver;
+  public JoystickButton autoNavButton;
 
   private VisionLimeLight shooterVision;
 
@@ -34,6 +42,9 @@ public class RobotContainer {
   private Joystick operator;
   private FlyWheelMech flyWheelMech;
   private IntakeMech intakeMech;
+  private VisionLimeLightH intakeVision;
+
+  private SendableChooser<Command> command = new SendableChooser<>();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -41,11 +52,18 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     shooterVision = new VisionLimeLight("limelight-shooter", 19.25, 14.562694, 90, ControlConstants.shooterVisionColumn);
+    intakeVision = new VisionLimeLightH("limelight-intake", 24, -5, 6, ControlConstants.shooterVisionColumn);
     driver = new Joystick(0);
     operator = new Joystick(1);
     intakeMech = new IntakeMech(operator);
     drive = new Drive(driver,shooterVision);
     flyWheelMech = new FlyWheelMech(driver, operator, shooterVision);
+
+
+    command.setDefaultOption("Galatic Search", new DetermineGalacticPath(intakeVision, IntakeMech.getIntakeSubsystem()));
+    Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
+      .getLayout("Auto", BuiltInLayouts.kList).withPosition(ControlConstants.autoColumn, 0).withSize(3, 1)
+      .add("Choose an Auto Mode", command).withWidget(BuiltInWidgets.kSplitButtonChooser);
     
 
     configureButtonBindings();
@@ -58,7 +76,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
+    autoNavButton.whenPressed(new DetermineGalacticPath(intakeVision, IntakeMech.getIntakeSubsystem()));
   }
 
 
@@ -69,6 +88,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return command.getSelected();
   }
 }

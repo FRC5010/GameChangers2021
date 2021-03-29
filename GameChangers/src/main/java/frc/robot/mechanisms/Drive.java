@@ -31,6 +31,7 @@ import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.SwitchDriveDirection;
 import frc.robot.commands.auto.BarrelRace;
+import frc.robot.commands.auto.DetermineGalacticPath;
 import frc.robot.commands.auto.ScriptedGalacticSearch;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -68,7 +69,7 @@ public class Drive {
   public JoystickButton switchDirection;
 
   public JoystickButton intakeDriveButton;
-  public JoystickButton autoNavButton;
+  //public JoystickButton autoNavButton;
 
   public Drive(Joystick driver, VisionSystem shooterVision) {
     init(driver, shooterVision);
@@ -105,9 +106,9 @@ public class Drive {
     switchDirection.whenPressed(new SwitchDriveDirection(driver));
 
 
-    autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
+    //autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
     //autoNavButton.whenPressed(new GalacticSearch(driveTrain, intakeCam, robotPose, intakeSystem, shaftSubsystem));
-    autoNavButton.whenPressed(new ScriptedGalacticSearch(IntakeMech.getIntakeSubsystem()));
+    //autoNavButton.whenPressed(new DetermineGalacticPath(, IntakeMech.getIntakeSubsystem()));
     // intakeDriveButton = new JoystickButton(drivgber, ControlConstants.startClimb);
     // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
   }

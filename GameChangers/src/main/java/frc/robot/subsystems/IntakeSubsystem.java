@@ -26,7 +26,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private CANPIDController pid;
   private CANEncoder intakeEncoder;
 
-  public IntakeSubsystem(CANSparkMax m9, CANSparkMax m12) { 
+  public IntakeSubsystem(CANSparkMax m9, CANSparkMax m12) {
     this.m9 = m9;
     this.m12 = m12;
     pid = m9.getPIDController();
@@ -43,14 +43,13 @@ public class IntakeSubsystem extends SubsystemBase {
     pid.setSmartMotionMaxAccel(IntakeConstants.maxAccel, smartMotionSlot);
     pid.setSmartMotionAllowedClosedLoopError(IntakeConstants.allowedErr, smartMotionSlot);
 
-    ShuffleboardLayout layout = Shuffleboard.getTab("Intake")
-      .getLayout("Intaker", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 1).withSize(2,5);
+    ShuffleboardLayout layout = Shuffleboard.getTab("Intake").getLayout("Intaker", BuiltInLayouts.kList)
+        .withPosition(ControlConstants.shooterColumn, 1).withSize(2, 5);
     layout.addNumber("Velocity", m12.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
-      .withProperties(Map.of("Max", 15000, "Min", -15000)).withPosition(ControlConstants.shooterColumn, 3);
+        .withProperties(Map.of("Max", 15000, "Min", -15000)).withPosition(ControlConstants.shooterColumn, 3);
     layout.addNumber("Current", m12::getOutputCurrent).withWidget(BuiltInWidgets.kDial)
-      .withProperties(Map.of("Max", 120)).withPosition(ControlConstants.shooterColumn, 5);
-    layout.addNumber("Encoder Value", intakeEncoder::getPosition)
-      .withPosition(ControlConstants.shooterColumn, 1);
+        .withProperties(Map.of("Max", 120)).withPosition(ControlConstants.shooterColumn, 5);
+    layout.addNumber("Encoder Value", intakeEncoder::getPosition).withPosition(ControlConstants.shooterColumn, 1);
   }
 
   @Override
@@ -58,41 +57,50 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setIntakePosition(){
-    
+  public void setIntakePosition() {
+
   }
 
-  public void spin(double power){
+  public double getIntakePosition(){
+    return intakeEncoder.getPosition();
+  }
+
+  public void spin(double power) {
     m12.set(power);
   }
 
-  public void moveIntake(double power){
+  public void moveIntake(double power) {
     double encoderVal = intakeEncoder.getPosition();
-    //double error = Math.min(Math.abs(encoderVal-IntakeMech.intakeFastMax), Math.abs(encoderVal-IntakeMech.intakeFastMin));
+    // double error = Math.min(Math.abs(encoderVal-IntakeMech.intakeFastMax),
+    // Math.abs(encoderVal-IntakeMech.intakeFastMin));
     double error;
     double finPow;
-    // encoderVal <= IntakeMech.intakeFastMax && encoderVal >= IntakeMech.intakeFastMin
+    // encoderVal <= IntakeMech.intakeFastMax && encoderVal >=
+    // IntakeMech.intakeFastMin
 
-    if(encoderVal <= IntakeMech.intakeMax && encoderVal >= IntakeMech.intakeMin){
-      if(power > 0){
-        error = encoderVal-IntakeMech.intakeMax;
-        finPow = encoderVal <= IntakeMech.intakeFastMax ? power : power * (error/100);
+    if (power > 0) {
+      if (encoderVal <= IntakeMech.intakeMax) {
+        error = Math.abs(encoderVal - IntakeMech.intakeMax);
+        finPow = encoderVal <= IntakeMech.intakeFastMax ? power : power * (error / 100);
         m9.set(finPow);
-
-      }else if(power < 0){
-        error = encoderVal-IntakeMech.intakeMin;
-        finPow = encoderVal >= IntakeMech.intakeFastMin ? power : power * (error/100);
-        m9.set(finPow);
-      }else{
+      } else {
         m9.set(0);
       }
-    }else{
+    } else if (power < 0) {
+      if (encoderVal >= IntakeMech.intakeMin) {
+        error = Math.abs(encoderVal - IntakeMech.intakeMin);
+        finPow = encoderVal >= IntakeMech.intakeFastMin ? power : power * (error / 100);
+        m9.set(finPow);
+      } else {
+        m9.set(0);
+      }
+    } else {
       m9.set(0);
     }
-    
+
   }
 
-  public void stop(){
+  public void stop() {
     m12.set(0);
   }
 }

@@ -21,6 +21,7 @@ public class IntakeMech {
     private CANSparkMax m11;
     private CANSparkMax intakeMotor;
     private Joystick operator;
+    private Joystick driver;
     private JoystickButton intakeUp;
     private JoystickButton intakeDown;
 
@@ -30,7 +31,8 @@ public class IntakeMech {
     public static double intakeFastMax = intakeMax - 10;
     public static double intakeFastMin= intakeMin + 10;
 
-    public IntakeMech(Joystick operator){
+    public IntakeMech(Joystick operator, Joystick driver){
+        this.driver = driver;
         this.operator = operator;
         m9 = new CANSparkMax(9, MotorType.kBrushless);
         m11 = new CANSparkMax(11, MotorType.kBrushless);
@@ -47,8 +49,12 @@ public class IntakeMech {
 
         intakeSubsystem.setDefaultCommand(new IntakeBalls(intakeSubsystem, operator));
 
-        intakeUp = new JoystickButton(operator, ControlConstants.intakeUpButton);
-        intakeDown = new JoystickButton(operator, ControlConstants.intakeDownButton);
+        //intakeUp = new JoystickButton(operator, ControlConstants.intakeUpButton);
+        //intakeDown = new JoystickButton(operator, ControlConstants.intakeDownButton);
+
+        intakeUp = new JoystickButton(driver, ControlConstants.intakeUpButton);
+        intakeDown = new JoystickButton(driver, ControlConstants.intakeDownButton);
+
 
         intakeUp.whileHeld(new IntakeUp(intakeSubsystem));
         intakeDown.whileHeld(new IntakeDown(intakeSubsystem));

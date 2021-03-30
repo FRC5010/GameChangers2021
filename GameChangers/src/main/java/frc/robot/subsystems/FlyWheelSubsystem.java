@@ -122,8 +122,9 @@ public class FlyWheelSubsystem extends SubsystemBase {
   // https://www.desmos.com/calculator/e8sdi68bmn
   public void spinUpWheelRPM(double setPoint) {
     this.flyWheelSetPoint = setPoint;
-    pidController.setFF(ShooterConstants.kS / setPoint + ShooterConstants.kV);
-    pidController.setReference(setPoint, ControlType.kVelocity);
+    double constantRPM = 4500;
+    pidController.setFF(ShooterConstants.kS / constantRPM + ShooterConstants.kV);
+    pidController.setReference(constantRPM, ControlType.kVelocity);
   }
 
   public void determineIfReadyToShoot() {
@@ -151,7 +152,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public void end() {
-    motor.set(0);
+    //motor.set(0);
     hood.set(0);
   }
 

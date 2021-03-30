@@ -70,12 +70,14 @@ public class ControlConstants {
 
     // Shuffleboard constants
     public static String SBTabDriverDisplay = "Driver Display";
+    public static String SBTabVisionDisplay = "Vision Display";
     public static String SBTabDiagnostics = "Diagnostics";
     public static int shooterColumn = 0;
     public static int hoodColumn = 2;
 
     public static int driverColumn = 4;
     public static int autoColumn = 4;
+    public static int intakeVisionColumn = 0;
     public static int shooterVisionColumn = 6;
 
     public static int autoNavButton = ButtonNums.X_BUTTON.ordinal();

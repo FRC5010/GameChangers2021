@@ -20,6 +20,7 @@ public class IntakeMech {
     private CANSparkMax m9;
     private CANSparkMax m11;
     private CANSparkMax intakeMotor;
+    private Joystick operator;
     private JoystickButton intakeUp;
     private JoystickButton intakeDown;
 

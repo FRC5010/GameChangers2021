@@ -21,7 +21,6 @@ import frc.robot.ControlConstants;
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 import frc.robot.commands.Driving;
-import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.DriveConstants;
 
 public class DriveTrainMain extends SubsystemBase {
@@ -37,7 +36,7 @@ public class DriveTrainMain extends SubsystemBase {
 
     ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
       .getLayout("Driver", BuiltInLayouts.kList)
-      .withPosition(ControlConstants.driverColumn, 3)
+      .withPosition(ControlConstants.driverColumn, 2)
       .withSize(2, 5);
     layout.addNumber("Throttle Factor", this::getThrottleFactorDisplay)
       .withWidget(BuiltInWidgets.kDial)

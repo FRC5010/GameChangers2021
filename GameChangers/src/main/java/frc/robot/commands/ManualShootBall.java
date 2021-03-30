@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.mechanisms.ShooterConstants;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
-import frc.robot.subsystems.VisionSystem;
 
 public class ManualShootBall extends CommandBase {
   /**

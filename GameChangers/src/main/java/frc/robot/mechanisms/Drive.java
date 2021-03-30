@@ -30,11 +30,7 @@ import frc.robot.Robot;
 import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.SwitchDriveDirection;
-import frc.robot.commands.auto.BarrelRace;
-import frc.robot.commands.auto.DetermineGalacticPath;
-import frc.robot.commands.auto.ScriptedGalacticSearch;
 import frc.robot.subsystems.DriveTrainMain;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Pose;
 import frc.robot.subsystems.VisionSystem;
 

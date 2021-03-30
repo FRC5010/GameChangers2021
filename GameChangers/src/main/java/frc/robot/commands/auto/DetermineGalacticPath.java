@@ -4,21 +4,12 @@
 
 package frc.robot.commands.auto;
 
-import java.util.List;
-import java.util.concurrent.ScheduledFuture;
-
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
-import frc.robot.commands.RamseteFollower;
 import frc.robot.mechanisms.Drive;
-import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.VisionSystem;
 
@@ -64,16 +55,21 @@ public class DetermineGalacticPath extends CommandBase {
     double bBlueError = Math.abs(xAngle - bBlue);
 
     Command pathToRun = new InstantCommand();
+    String pathNameToRun = "";
     if (aRedError < aBlueError && aRedError < bRedError && aRedError < bBlueError) {
       pathToRun = aRedAuto;
+      pathNameToRun = aRedPath;
     } else if (aBlueError < aRedError && aBlueError < bRedError && aBlueError < bBlueError){
       pathToRun = aBlueAuto;
+      pathNameToRun = aBluePath;
     } else if(bRedError < aRedError && bRedError < aBlueError && bRedError < bBlueError){
       pathToRun = bRedAuto;
+      pathNameToRun = bRedPath;
     } else if(bBlueError < aRedError && bBlueError < aBlueError && bBlueError < bRedError){
       pathToRun = bBlueAuto;
+      pathNameToRun = bBluePath;
     }
-    SmartDashboard.putString("Selected GS Path", pathToRun.getName());
+    SmartDashboard.putString("Selected GS Path", pathNameToRun);
     CommandScheduler.getInstance().schedule(new ScriptedGalacticSearch(intakeSubsystem, pathToRun));
   }
 

@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ControlConstants;
-import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.VisionSystem;
 

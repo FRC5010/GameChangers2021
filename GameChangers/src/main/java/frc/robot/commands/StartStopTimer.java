@@ -39,7 +39,7 @@ static long currTime = 0;
   @Override
   public void execute() {
     currTime = System.currentTimeMillis();
-    SmartDashboard.putNumber("Timer", currTime-startTime);
+    SmartDashboard.putNumber("Timer", getTime());
   }
 
   // Called once the command ends or is interrupted.

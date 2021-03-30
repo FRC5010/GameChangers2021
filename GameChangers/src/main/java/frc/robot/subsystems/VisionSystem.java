@@ -33,7 +33,7 @@ public abstract class VisionSystem extends SubsystemBase {
     this.name = name;
     rawValues = new VisionValues();
     smoothedValues = new VisionValues();
-    ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
+    ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabVisionDisplay);
     visionLayout = driverTab.getLayout(name + " Vision", BuiltInLayouts.kGrid).withPosition(colIndex, 0).withSize(3, 5);
   }
 
@@ -46,7 +46,7 @@ public abstract class VisionSystem extends SubsystemBase {
     this.targetHeight = targetHeight;
     updateValues = true;
     CAMERA_CAL_ANGLE = Math.toDegrees(Math.tanh((targetHeight - camHeight) / Constants.CAMERA_CAL_DISTANCE));
-    ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
+    ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabVisionDisplay);
     visionLayout = driverTab.getLayout(name + " Vision", BuiltInLayouts.kGrid).withPosition(colIndex, 0).withSize(3, 5);
     table = NetworkTableInstance.getDefault();
     // HttpCamera camera = new HttpCamera(path + " Cam",

@@ -34,7 +34,7 @@ public class HopperOmni extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hopperOmniSubsystem.SetHopperSpeed(operator.getRawAxis(1));
+    hopperOmniSubsystem.SetHopperSpeed(operator.getRawAxis(1)*.4);
     hopperOmniSubsystem.SetOmniSpeed(operator.getRawAxis(5));
   }
 

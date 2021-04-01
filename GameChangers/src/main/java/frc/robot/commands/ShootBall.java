@@ -30,6 +30,7 @@ public class ShootBall extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    flyWheelSubsystem.setSpinningOff(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,7 +44,7 @@ public class ShootBall extends CommandBase {
     flyWheelSubsystem.determineIfReadyToShoot();
     if(flyWheelSubsystem.getReadyToShoot()){
       hopperOmniSubsystem.SetOmniSpeed(-1);
-      hopperOmniSubsystem.SetHopperSpeed(-.15);
+      hopperOmniSubsystem.SetHopperSpeed(-.45);
     }else{
       hopperOmniSubsystem.SetHopperSpeed(0);
       hopperOmniSubsystem.SetOmniSpeed(0);

@@ -24,6 +24,7 @@ private IntakeSubsystem intakeSubsystem;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //run tests for intake motors. As of 4/1/21, they are struggling to raise the intake and may need more power
     intakeSubsystem.moveIntake(-.1*4);
   }
 

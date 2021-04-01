@@ -53,8 +53,8 @@ public class AimWithVision extends CommandBase {
     this.driver = null;
     this.targetAngle = targetAngle;
     this.driveSpeed = driveSpeed;
-    this.p = 0.0065;
-    this.d = 0.085;
+    this.p = 0.015;
+    this.d = 0.00127;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -84,7 +84,8 @@ public class AimWithVision extends CommandBase {
       SmartDashboard.putNumber("Vision Aim Error", error);
       double correction = error * p;
       SmartDashboard.putNumber("Correction", correction);
-      correction = Math.max(-d, Math.min(d, correction));
+      //correction = Math.max(-d, Math.min(d, correction));
+      //correction = Math.abs(correction);
       if (driver != null) {
         driveSpeed = drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle));
       }

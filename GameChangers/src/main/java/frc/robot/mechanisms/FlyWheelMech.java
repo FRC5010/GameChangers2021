@@ -20,6 +20,7 @@ import frc.robot.commands.CameraCalibrateShooter;
 import frc.robot.commands.HopperOmni;
 import frc.robot.commands.ManualShootBall;
 import frc.robot.commands.ShootBall;
+import frc.robot.commands.StopFlyWheel;
 import frc.robot.commands.ToggleHoodDown;
 import frc.robot.commands.ToggleHoodUp;
 import frc.robot.subsystems.FlyWheelSubsystem;
@@ -46,6 +47,7 @@ public class FlyWheelMech {
     private JoystickButton manualLaunch;
     private JoystickButton calibrate;
     private JoystickButton lightToggle;
+    private JoystickButton stopFlyWheel;
     private POVButton baseUp;
     private POVButton baseDown;
     private CANPIDController m_pidController;
@@ -56,11 +58,13 @@ public class FlyWheelMech {
         hoodDown = new JoystickButton(operator, ControlConstants.hoodDown);
         baseUp = new POVButton(operator, ControlConstants.incShooter);
         baseDown = new POVButton(operator, ControlConstants.decShooter);
-        manualLaunch = new JoystickButton(operator, ControlConstants.manualShootButton);
+        manualLaunch = new JoystickButton(driver, ControlConstants.manualShootButton);
 
-        launch = new JoystickButton(driver, ControlConstants.launchButton);
+        launch = new JoystickButton(operator, ControlConstants.launchButton);
         calibrate = new JoystickButton(driver, ControlConstants.calibrate);
         lightToggle = new JoystickButton(driver, ControlConstants.toggleLed);
+
+        stopFlyWheel = new JoystickButton(operator, ControlConstants.autoNavButton);
 
         hoodUp.whenPressed(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whenPressed(new ToggleHoodDown(flyWheelSubsystem));
@@ -71,6 +75,9 @@ public class FlyWheelMech {
         baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed -= 10));
         calibrate.whenPressed(new CameraCalibrateShooter(vision));
         lightToggle.whenPressed(new InstantCommand(() -> vision.setLight(!vision.isLightOn())));
+
+        stopFlyWheel.whenPressed(new StopFlyWheel(flyWheelSubsystem));
+        //stopFlyWheel.whenPressed(new InstantCommand( () -> flyWheelSubsystem.spinUpWheelRPM(0)));
     }
 
     public FlyWheelMech(Joystick driver, Joystick operator, VisionSystem vision){

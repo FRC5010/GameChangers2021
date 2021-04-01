@@ -36,6 +36,9 @@ public class FlyWheelSubsystem extends SubsystemBase {
   private Boolean readyToShoot = false;
   private double flyWheelSetPoint = 0;
   private double hoodSetPoint = 1600;
+  private double constantRPM = 4000;
+  
+  private boolean isSpinningOff = false;
 
   public FlyWheelSubsystem(CANSparkMax m1, CANSparkMax hood, CANPIDController m_pidController,
       VisionSystem visionSystem) {
@@ -120,7 +123,13 @@ public class FlyWheelSubsystem extends SubsystemBase {
   // https://www.desmos.com/calculator/e8sdi68bmn
   public void spinUpWheelRPM(double setPoint) {
     this.flyWheelSetPoint = setPoint;
-    double constantRPM = 4500;
+    double constantRPM;
+    if(!isSpinningOff){
+      constantRPM = 3500;
+    }else{
+      constantRPM = 0;
+    }
+
     pidController.setFF(ShooterConstants.kS / constantRPM + ShooterConstants.kV);
     pidController.setReference(constantRPM, ControlType.kVelocity);
   }
@@ -209,5 +218,9 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public void incHoodSetPoint() {
     hoodSetPoint += ShooterConstants.hoodMove;
+  }
+
+  public void setSpinningOff(boolean isSpinningOff) {
+    this.isSpinningOff = isSpinningOff;
   }
 }

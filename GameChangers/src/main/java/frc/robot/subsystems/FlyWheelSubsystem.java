@@ -121,45 +121,34 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   // data for new flywheel distance to hood and rpm
   // https://www.desmos.com/calculator/e8sdi68bmn
-  public void spinUpWheelRPM(double setPoint) {
-    this.flyWheelSetPoint = setPoint;
+  public void spinUpWheelRPM() {
     double constantRPM;
-    if(!isSpinningOff){
-      constantRPM = 3500;
-    }else{
-      constantRPM = 0;
-    }
+    constantRPM = 3500;
 
     pidController.setFF(ShooterConstants.kS / constantRPM + ShooterConstants.kV);
     pidController.setReference(constantRPM, ControlType.kVelocity);
+  }
+
+  public void spinUpWheelRPM(double setPoint) {
+    this.flyWheelSetPoint = setPoint;
+  }
+
+  public void stopPID(){
+    pidController.setFF(0);
+    pidController.setReference(0, ControlType.kVelocity);
   }
 
   public void determineIfReadyToShoot() {
     readyToShoot = getFlyWheelReadyToShoot() && getHoodReadyToShoot();
   }
 
-  public void setWheelSpeed(double setPoint) {
-    motor.set(-setPoint);
-  }
-
-  public boolean getReadyToShoot() {
-    return readyToShoot;
-  }
-
-  public boolean getFlyWheelReadyToShoot() {
-    double rpmRange = 25;
-    if (readyToShoot) {
-      rpmRange = 150;
-    }
-    return (flyWheelSetPoint - motor.getEncoder().getVelocity()) < rpmRange;
-  }
+  
 
   public boolean getHoodReadyToShoot() {
     return Math.abs(hoodPot.getAverageValue() - hoodSetPoint) < ShooterConstants.hoodMove;
   }
 
-  public void end() {
-    //motor.set(0);
+  public void stopHood() {
     hood.set(0);
   }
 
@@ -182,6 +171,23 @@ public class FlyWheelSubsystem extends SubsystemBase {
     } else {
       hood.set(-0.01);
     }
+  }
+
+  //getters
+  public void setWheelSpeed(double setPoint) {
+    motor.set(-setPoint);
+  }
+
+  public boolean getReadyToShoot() {
+    return readyToShoot;
+  }
+
+  public boolean getFlyWheelReadyToShoot() {
+    double rpmRange = 25;
+    if (readyToShoot) {
+      rpmRange = 150;
+    }
+    return (flyWheelSetPoint - motor.getEncoder().getVelocity()) < rpmRange;
   }
 
   public int getHoodValue(){
@@ -218,9 +224,5 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
   public void incHoodSetPoint() {
     hoodSetPoint += ShooterConstants.hoodMove;
-  }
-
-  public void setSpinningOff(boolean isSpinningOff) {
-    this.isSpinningOff = isSpinningOff;
   }
 }

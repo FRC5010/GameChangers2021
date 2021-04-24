@@ -17,7 +17,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.HopperOmni;
-import frc.robot.commands.auto.DetermineGalacticPath;
+import frc.robot.commands.auto.AutoTestPath;
+import frc.robot.commands.auto.LeftShoot3RP;
+import frc.robot.commands.auto.Shoot3RpShoot2;
+import frc.robot.commands.auto.Shoot3Trench3;
+import frc.robot.mechanisms.ClimbMech;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.FlyWheelMech;
 import frc.robot.mechanisms.IntakeMech;
@@ -43,6 +47,7 @@ public class RobotContainer {
   private FlyWheelMech flyWheelMech;
   private IntakeMech intakeMech;
   private VisionLimeLightH intakeVision;
+  private ClimbMech climb;
 
   private SendableChooser<Command> command = new SendableChooser<>();
 
@@ -58,12 +63,9 @@ public class RobotContainer {
     intakeMech = new IntakeMech(operator, driver);
     drive = new Drive(driver,shooterVision);
     flyWheelMech = new FlyWheelMech(driver, operator, shooterVision);
+    climb = new ClimbMech(driver, operator,flyWheelMech);
 
-
-    command.setDefaultOption("Galatic Search", new DetermineGalacticPath(intakeVision, IntakeMech.getIntakeSubsystem()));
-    Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
-      .getLayout("Auto", BuiltInLayouts.kList).withPosition(ControlConstants.autoColumn, 0).withSize(3, 1)
-      .add("Choose an Auto Mode", command).withWidget(BuiltInWidgets.kSplitButtonChooser);
+    
     
 
     configureButtonBindings();
@@ -78,6 +80,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
     //autoNavButton.whenPressed(new DetermineGalacticPath(intakeVision, IntakeMech.getIntakeSubsystem()));
+    command.setDefaultOption("test", new AutoTestPath(drive.getDriveTrainMain(), shooterVision, flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
+    command.addOption("Right Trench", new Shoot3Trench3(drive.getDriveTrainMain(), shooterVision, flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
+    command.addOption("Right RP", new Shoot3RpShoot2(drive.getDriveTrainMain(), shooterVision, flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
+    command.addOption("Left RP", new LeftShoot3RP(drive.getDriveTrainMain(), shooterVision, flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
+
+    Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay).getLayout("Auto", BuiltInLayouts.kList)
+        .withPosition(ControlConstants.autoColumn, 0).withSize(3, 1).add("Choose an Auto Mode", command)
+        .withWidget(BuiltInWidgets.kSplitButtonChooser);
+
   }
 
 

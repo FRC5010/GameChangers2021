@@ -16,21 +16,22 @@ public class ShootBall extends CommandBase {
   /**
    * Creates a new ShootBall.
    */
-  public FlyWheelSubsystem flyWheelSubsystem;
+  private FlyWheelSubsystem flyWheelSubsystem;
   private HopperOmniSubsystem hopperOmniSubsystem;
   private VisionSystem visionSystem;
+
   public ShootBall(FlyWheelSubsystem flyWheelSubsystem, HopperOmniSubsystem hopperOmniSubsystem, VisionSystem visionSystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.hopperOmniSubsystem = hopperOmniSubsystem;
     this.flyWheelSubsystem = flyWheelSubsystem;
     this.visionSystem = visionSystem;
-    addRequirements(this.flyWheelSubsystem, this.hopperOmniSubsystem, this.visionSystem);
+    addRequirements(this.flyWheelSubsystem, this.hopperOmniSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSubsystem.setSpinningOff(false);
+    flyWheelSubsystem.spinUpWheelRPM();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,7 +55,8 @@ public class ShootBall extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    flyWheelSubsystem.end();
+    flyWheelSubsystem.stopHood();
+    flyWheelSubsystem.stopPID();
     flyWheelSubsystem.determineIfReadyToShoot();
     hopperOmniSubsystem.SetHopperSpeed(0);
     hopperOmniSubsystem.SetOmniSpeed(0);

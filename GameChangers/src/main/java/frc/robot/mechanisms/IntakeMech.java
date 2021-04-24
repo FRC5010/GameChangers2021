@@ -60,7 +60,7 @@ public class IntakeMech {
         intakeDown.whileHeld(new IntakeDown(intakeSubsystem));
     }
 
-    public static IntakeSubsystem getIntakeSubsystem() {
+    public IntakeSubsystem getIntakeSubsystem() {
         return intakeSubsystem;
     }
 }

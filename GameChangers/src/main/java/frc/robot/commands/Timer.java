@@ -5,20 +5,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.FlyWheelSubsystem;
 
-public class StopFlyWheel extends CommandBase {
-  /** Creates a new StopFlyWheel. */
-  private FlyWheelSubsystem flyWheelSubsystem;
-  public StopFlyWheel(FlyWheelSubsystem flyWheelSubsystem) {
+public class Timer extends CommandBase {
+  long startTime;
+  long currTime;
+  long time;
+  /** Creates a new Timer. */
+  public Timer(long timeMilli) {
+    this.time = timeMilli;
     // Use addRequirements() here to declare subsystem dependencies.
-    this.flyWheelSubsystem = flyWheelSubsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSubsystem.stopPID();
+    startTime = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,6 +33,7 @@ public class StopFlyWheel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    currTime = System.currentTimeMillis();
+    return time < currTime - startTime;
   }
 }

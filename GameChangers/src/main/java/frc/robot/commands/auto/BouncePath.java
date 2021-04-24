@@ -20,9 +20,9 @@ public class BouncePath extends SequentialCommandGroup {
     addCommands(new ParallelDeadlineGroup(
         new SequentialCommandGroup(
             Drive.getAutonomousCommand(path1, true),
-            Drive.getAutonomousCommand(path2),
-            Drive.getAutonomousCommand(path3),
-            Drive.getAutonomousCommand(path4)
+            Drive.getAutonomousCommand(path2,false),
+            Drive.getAutonomousCommand(path3,false),
+            Drive.getAutonomousCommand(path4,false)
             ), 
             new StartStopTimer()));
   }

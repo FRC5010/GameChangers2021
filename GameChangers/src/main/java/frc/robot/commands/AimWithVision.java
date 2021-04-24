@@ -41,7 +41,6 @@ public class AimWithVision extends CommandBase {
     this.p = 0.025;
     this.d = 0.1 ;
     addRequirements(drive);
-    addRequirements(vision);
 
     SmartDashboard.putNumber("Aim w/ vision p", p);
     SmartDashboard.putNumber("Aim w/ vision d", d);

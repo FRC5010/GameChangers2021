@@ -2,38 +2,33 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.auto;
+package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FlyWheelSubsystem;
 
-public class FlyWheelDefault extends CommandBase {
-  /** Creates a new FlyWheelDefault. */
+public class StartFlyWheel extends CommandBase {
+  /** Creates a new StartFlyWheel. */
   private FlyWheelSubsystem flyWheelSubsystem;
-  private Joystick driver;
-  public FlyWheelDefault(Joystick driver, FlyWheelSubsystem flyWheelSubsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public StartFlyWheel(FlyWheelSubsystem flyWheelSubsystem) {
     this.flyWheelSubsystem = flyWheelSubsystem;
-    this.driver = driver;
     addRequirements(flyWheelSubsystem);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    flyWheelSubsystem.spinUpWheelRPM();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    flyWheelSubsystem.setWheelSpeed(driver.getRawAxis(2));
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    flyWheelSubsystem.setWheelSpeed(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

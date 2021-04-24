@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ControlConstants;
 import frc.robot.subsystems.HopperOmniSubsystem;
 
 public class HopperOmni extends CommandBase {
@@ -34,8 +35,8 @@ public class HopperOmni extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hopperOmniSubsystem.SetHopperSpeed(operator.getRawAxis(1)*.4);
-    hopperOmniSubsystem.SetOmniSpeed(operator.getRawAxis(5));
+    hopperOmniSubsystem.SetHopperSpeed(operator.getRawAxis(ControlConstants.operatorLeftY)*.4);
+    hopperOmniSubsystem.SetOmniSpeed(operator.getRawAxis(ControlConstants.operatorRightY));
   }
 
   // Called once the command ends or is interrupted.

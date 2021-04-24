@@ -28,6 +28,7 @@ public class ManualShootBall extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    flyWheelSubsystem.spinUpWheelRPM();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,7 +51,8 @@ public class ManualShootBall extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    flyWheelSubsystem.end();
+    flyWheelSubsystem.stopHood();
+    flyWheelSubsystem.stopPID();
     flyWheelSubsystem.determineIfReadyToShoot();
     hopperOmniSubsystem.SetHopperSpeed(0);
     hopperOmniSubsystem.SetOmniSpeed(0);

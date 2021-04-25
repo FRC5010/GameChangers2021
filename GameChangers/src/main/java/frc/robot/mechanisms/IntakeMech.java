@@ -36,9 +36,14 @@ public class IntakeMech {
         this.operator = operator;
         m9 = new CANSparkMax(9, MotorType.kBrushless);
         m11 = new CANSparkMax(11, MotorType.kBrushless);
+        m9.restoreFactoryDefaults();
+        m11.restoreFactoryDefaults();
+
         m11.follow(m9,true);
         m9.setInverted(true);
+        
         intakeMotor = new CANSparkMax(12, MotorType.kBrushless);
+        intakeMotor.restoreFactoryDefaults();
         intakeMotor.setInverted(true);
 
         m9.setSmartCurrentLimit(40);
@@ -49,12 +54,11 @@ public class IntakeMech {
 
         intakeSubsystem.setDefaultCommand(new IntakeBalls(intakeSubsystem, operator));
 
-        //intakeUp = new JoystickButton(operator, ControlConstants.intakeUpButton);
-        //intakeDown = new JoystickButton(operator, ControlConstants.intakeDownButton);
+        intakeUp = new JoystickButton(operator, ControlConstants.intakeUpButton);
+        intakeDown = new JoystickButton(operator, ControlConstants.intakeDownButton);
 
-        intakeUp = new JoystickButton(driver, ControlConstants.intakeUpButton);
-        intakeDown = new JoystickButton(driver, ControlConstants.intakeDownButton);
-
+        //intakeUp = new JoystickButton(driver, ControlConstants.intakeUpButton);
+        //intakeDown = new JoystickButton(driver, ControlConstants.intakeDownButton);
 
         intakeUp.whileHeld(new IntakeUp(intakeSubsystem));
         intakeDown.whileHeld(new IntakeDown(intakeSubsystem));

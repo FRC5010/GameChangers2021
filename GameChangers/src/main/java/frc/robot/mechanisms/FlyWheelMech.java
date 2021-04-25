@@ -77,7 +77,6 @@ public class FlyWheelMech {
         lightToggle.whenPressed(new InstantCommand(() -> vision.setLight(!vision.isLightOn())));
 
         stopFlyWheel.whenPressed(new StopFlyWheel(flyWheelSubsystem));
-        //stopFlyWheel.whenPressed(new InstantCommand( () -> flyWheelSubsystem.spinUpWheelRPM(0)));
     }
 
     public FlyWheelMech(Joystick driver, Joystick operator, VisionSystem vision){
@@ -87,12 +86,19 @@ public class FlyWheelMech {
 
         m1 = new CANSparkMax(6,MotorType.kBrushless);
         m2 = new CANSparkMax(7,MotorType.kBrushless);
+        m1.restoreFactoryDefaults();
+        m2.restoreFactoryDefaults();
+
         m1.setInverted(true);
         m2.follow(m1,true);
         m1.setSmartCurrentLimit(40);
 
         hopperMotor = new CANSparkMax(10, MotorType.kBrushless);
         HOmniMotor = new CANSparkMax(5, MotorType.kBrushless);
+
+        hopperMotor.restoreFactoryDefaults();
+        HOmniMotor.restoreFactoryDefaults();
+        
         hopperMotor.setSmartCurrentLimit(40);
         HOmniMotor.setSmartCurrentLimit(40);
 

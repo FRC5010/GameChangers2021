@@ -62,7 +62,8 @@ public class RamseteFollower extends RamseteCommand {
     timer.reset();
     timer.start();
 
-    if(reset){pose.resetOdometry(trajectory.getInitialPose());
+    if(reset){
+      pose.resetOdometry(trajectory.getInitialPose());
     }
   }
 

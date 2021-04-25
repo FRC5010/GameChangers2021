@@ -5,12 +5,8 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.AimWithVision;
 import frc.robot.commands.IntakeBalls;
-import frc.robot.commands.ShootBall;
-import frc.robot.commands.Timer;
 import frc.robot.mechanisms.Drive;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.FlyWheelSubsystem;

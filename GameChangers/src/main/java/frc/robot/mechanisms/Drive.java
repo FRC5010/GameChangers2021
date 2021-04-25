@@ -63,7 +63,6 @@ public class Drive {
   public JoystickButton intakeAimButton;
   public JoystickButton shooterAimButton;
 
-  
   public POVButton incThrottleFactor;
   public POVButton decThrottleFactor;
   public POVButton incSteerFactor;
@@ -72,9 +71,7 @@ public class Drive {
   public JoystickButton switchDirection;
 
   public JoystickButton intakeDriveButton;
-  //public JoystickButton autoNavButton;
-
-  
+  public JoystickButton autoNavButton;
 
   public Drive(Joystick driver, VisionSystem shooterVision) {
     init(driver, shooterVision);
@@ -82,10 +79,6 @@ public class Drive {
   }
 
   private void configureButtonBindings() {
-    // intakeAimButton = new JoystickButton(driver,
-    // ControlConstants.intakeAimButton);
-    // intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver,
-    // 0));
     shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
     shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
 
@@ -107,17 +100,6 @@ public class Drive {
 
     switchDirection = new JoystickButton(driver, ControlConstants.toggleDrive);
     switchDirection.whenPressed(new SwitchDriveDirection(driver));
-
-    // autoNavButton = new JoystickButton(driver, ControlConstants.autoNavButton);
-    // autoNavButton.whenPressed(new GalacticSearch(driveTrain, intakeCam,
-    // robotPose, intakeSystem, shaftSubsystem));
-    // autoNavButton.whenPressed(new DetermineGalacticPath(,
-    // IntakeMech.getIntakeSubsystem()));
-    // intakeDriveButton = new JoystickButton(drivgber,
-    // ControlConstants.startClimb);
-    // intakeDriveButton.whenPressed(new ParallelCommandGroup(new
-    // AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem,
-    // 0.7)));
   }
 
   public static void setCurrentLimits(int currentLimit) {
@@ -128,6 +110,7 @@ public class Drive {
       rDrive2.setSmartCurrentLimit(currentLimit);
     }
   }
+
   public void init(Joystick driver, VisionSystem shooterVision) {
     this.driver = driver;
     // Neos HAVE to be in brushless
@@ -136,37 +119,32 @@ public class Drive {
 
     rDrive1 = new CANSparkMax(3, MotorType.kBrushless);
     rDrive2 = new CANSparkMax(4, MotorType.kBrushless);
+
+    lDrive1.restoreFactoryDefaults();
+    lDrive2.restoreFactoryDefaults();
+    rDrive1.restoreFactoryDefaults();
+    rDrive2.restoreFactoryDefaults();
+
     lDrive1.setInverted(false);
     lDrive2.follow(lDrive1, false);
     rDrive1.setInverted(true);
     rDrive2.follow(rDrive1, false);
     rDrive2.setInverted(false);
 
-    // front two motors
-    // lDrive1.disable();
-    // rDrive2.disable();
-
-    // back two motors
-    // lDrive2.disable();
-    // rDrive2.disable();
-
     lEncoder = lDrive1.getEncoder();
     rEncoder = rDrive1.getEncoder();
 
     setCurrentLimits(ControlConstants.driveTrainCurrentLimit);
 
-    // lEncoder.setPositionConversionFactor(Constants.distancePerPulse);
-    // rEncoder.setPositionConversionFactor(-Constants.distancePerPulse);
+    lEncoder.setPositionConversionFactor(DriveConstants.distancePerPulse);
+    rEncoder.setPositionConversionFactor(-DriveConstants.distancePerPulse);
 
-    // lEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
-    // rEncoder.setVelocityConversionFactor(-Constants.distancePerPulse);
+    lEncoder.setVelocityConversionFactor(DriveConstants.distancePerPulse);
+    rEncoder.setVelocityConversionFactor(-DriveConstants.distancePerPulse);
 
     robotPose = new Pose(lEncoder, rEncoder);
     shooterCam = shooterVision;
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver, robotPose);
-    // intakeCam = intakeVision;
-    // intakeSystem = intakeSubsystem;
-
   }
 
   /**
@@ -176,7 +154,7 @@ public class Drive {
    * 
    */
 
-  public static Command getAutonomousCommand(String path,boolean reset) {
+  public static Command getAutonomousCommand(String path, boolean reset) {
     // Create a voltage constraint to ensure we don't accelerate too fast
     String trajectoryJSON = path;
     Trajectory trajectory = new Trajectory();
@@ -186,19 +164,16 @@ public class Drive {
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
-    RamseteCommand ramseteCommand = new RamseteFollower(trajectory,reset);
+    RamseteCommand ramseteCommand = new RamseteFollower(trajectory, reset);
 
     Command result = ramseteCommand;
-    
+
     // Run path following command, then stop at the end.
     return result;
   }
 
-  public DriveTrainMain getDriveTrainMain(){
+  public DriveTrainMain getDriveTrainMain() {
     return driveTrain;
   }
 
-
-
 }
-

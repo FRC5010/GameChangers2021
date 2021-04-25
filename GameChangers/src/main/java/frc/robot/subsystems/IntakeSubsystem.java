@@ -37,12 +37,6 @@ public class IntakeSubsystem extends SubsystemBase {
     pid.setFF(IntakeConstants.intakeFF);
     pid.setOutputRange(IntakeConstants.kMinOutput, IntakeConstants.kMaxOutput);
 
-    int smartMotionSlot = 0;
-    pid.setSmartMotionMaxVelocity(IntakeConstants.maxVel, smartMotionSlot);
-    pid.setSmartMotionMinOutputVelocity(IntakeConstants.minVel, smartMotionSlot);
-    pid.setSmartMotionMaxAccel(IntakeConstants.maxAccel, smartMotionSlot);
-    pid.setSmartMotionAllowedClosedLoopError(IntakeConstants.allowedErr, smartMotionSlot);
-
     ShuffleboardLayout layout = Shuffleboard.getTab("Intake").getLayout("Intaker", BuiltInLayouts.kList)
         .withPosition(ControlConstants.shooterColumn, 1).withSize(2, 5);
     layout.addNumber("Velocity", m12.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
@@ -55,10 +49,6 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  public void setIntakePosition() {
-
   }
 
   public double getIntakePosition(){

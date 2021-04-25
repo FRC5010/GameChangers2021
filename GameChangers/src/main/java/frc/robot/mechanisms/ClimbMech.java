@@ -39,10 +39,7 @@ public class ClimbMech {
 
         climbSubsystem = new ClimbSubsystem(armMotor1,armMotor2);
 
-
         startClimb = new JoystickButton(driver, ControlConstants.startClimb);
         startClimb.whileHeld(new SepArmClimb(operator, climbSubsystem,flyWheelMech.getHopperOmniSubsystem()));
-
-    
     }
 }

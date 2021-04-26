@@ -15,8 +15,8 @@ public class ShooterConstants {
     public static double baseSpeed = 2500; //1500;
 
     // **** CHANGE THIS NUMBER IF THE POT IS RESET ***** 
-    public static double hoodMax = 2531;
-    public static double hoodMin = hoodMax - 1103;
+    public static double hoodMax = 1728;
+    public static double hoodMin = hoodMax - 1124;
     //public static double hoodMin = 1398;
     public static double hoodC = -3.2;//-2.55;
     public static double hoodD = hoodMax - 424;

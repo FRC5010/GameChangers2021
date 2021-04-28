@@ -4,9 +4,11 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AimWithVision;
+import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.StartFlyWheel;
 import frc.robot.commands.Timer;
 import frc.robot.subsystems.DriveTrainMain;
@@ -21,14 +23,15 @@ import frc.robot.subsystems.VisionSystem;
 public class BeginningShoot3 extends SequentialCommandGroup {
   /** Creates a new BeginningShoot3. */
   public BeginningShoot3(DriveTrainMain driveTrain, VisionSystem visionSubsystem, FlyWheelSubsystem flyWheel, 
-  HopperOmniSubsystem hopperOmni, IntakeSubsystem intake) {
+  HopperOmniSubsystem hopperOmni, IntakeSubsystem intake, RamseteFollower initialPath) {
     // Add the deadline command in the super() call. Add other commands using
     // addCommands().
     addCommands(
+        new InstantCommand(() -> initialPath.reset()),
         new StartFlyWheel(flyWheel),
         new ParallelDeadlineGroup(
           new Timer(5000),
-          new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0),
+          new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0, false),
           new AutoShootBall(flyWheel, hopperOmni, visionSubsystem),
           new AutoIntakeDown(intake))
       );

@@ -28,7 +28,7 @@ public class EndShootAuto extends SequentialCommandGroup {
     addCommands(
       new ParallelDeadlineGroup(
         new Timer(5000),
-        new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0),
+        new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0, false),
         new ShootBall(flyWheel, hopperOmni, visionSubsystem)
       ),
       new StopFlyWheel(flyWheel)

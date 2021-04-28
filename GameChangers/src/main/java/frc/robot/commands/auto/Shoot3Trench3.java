@@ -7,6 +7,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.IntakeBalls;
+import frc.robot.commands.RamseteFollower;
 import frc.robot.mechanisms.Drive;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.FlyWheelSubsystem;
@@ -21,22 +22,22 @@ public class Shoot3Trench3 extends SequentialCommandGroup {
   /** Creates a new Shoot3Trench3. */
   public Shoot3Trench3(DriveTrainMain driveTrain, VisionSystem visionSubsystem, FlyWheelSubsystem flyWheel, 
   HopperOmniSubsystem hopperOmni, IntakeSubsystem intake) {
-
+    RamseteFollower trench1 = (RamseteFollower)Drive.getAutonomousCommand("paths/Trench1.wpilib.json", false);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new BeginningShoot3(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake),
+      new BeginningShoot3(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake, trench1),
       
       new ParallelDeadlineGroup(
-        Drive.getAutonomousCommand("paths/Trench1.wpilib.json", true),
+        trench1,
         new IntakeBalls(intake, 0.8)
-      ),
+      )//,
 
-      new ParallelDeadlineGroup(
-        Drive.getAutonomousCommand("paths/Trench2.wpilib.json", false)
-      ),
+      // new ParallelDeadlineGroup(
+      //   Drive.getAutonomousCommand("paths/Trench2.wpilib.json", false)
+      // ),
       
-      new EndShootAuto(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake)
+      // new EndShootAuto(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake)
     );
   }
 }

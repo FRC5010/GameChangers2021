@@ -55,6 +55,10 @@ public class RamseteFollower extends RamseteCommand {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+  public void reset() {
+    pose.resetOdometry(trajectory.getInitialPose());
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -63,7 +67,7 @@ public class RamseteFollower extends RamseteCommand {
     timer.start();
 
     if(reset){
-      pose.resetOdometry(trajectory.getInitialPose());
+      reset();
     }
   }
 

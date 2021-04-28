@@ -7,6 +7,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.IntakeBalls;
+import frc.robot.commands.RamseteFollower;
 import frc.robot.mechanisms.Drive;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.FlyWheelSubsystem;
@@ -23,11 +24,12 @@ public class Shoot3RpShoot2 extends SequentialCommandGroup {
   HopperOmniSubsystem hopperOmni, IntakeSubsystem intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+    RamseteFollower initialPath = (RamseteFollower)Drive.getAutonomousCommand("paths/RP1.wpilib.json", true);
     addCommands(
-      new BeginningShoot3(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake),
+      new BeginningShoot3(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake, initialPath),
 
       new ParallelDeadlineGroup(
-        Drive.getAutonomousCommand("paths/RP1.wpilib.json", true),
+        initialPath,
         new IntakeBalls(intake, 0.8)
       ),
 

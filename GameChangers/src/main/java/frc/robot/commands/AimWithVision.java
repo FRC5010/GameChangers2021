@@ -32,21 +32,22 @@ public class AimWithVision extends CommandBase {
   double lastTime;
   double p;
   double d;
+  boolean timeOut = true;
 
   public AimWithVision(DriveTrainMain drive, VisionSystem vision, Joystick driver, double targetAngle) {
     this.drive = drive;
     this.vision = vision;
     this.driver = driver;
     this.targetAngle = targetAngle;
-    this.p = 0.025;
-    this.d = 0.1 ;
+    this.p = 0.015;
+    this.d = 0.001 ;
     addRequirements(drive);
 
     SmartDashboard.putNumber("Aim w/ vision p", p);
     SmartDashboard.putNumber("Aim w/ vision d", d);
   }
 
-  public AimWithVision(DriveTrainMain drive, VisionSystem vision, double targetAngle, double driveSpeed) {
+  public AimWithVision(DriveTrainMain drive, VisionSystem vision, double targetAngle, double driveSpeed, boolean timeOut) {
     this.drive = drive;
     this.vision = vision;
     this.driver = null;
@@ -54,6 +55,7 @@ public class AimWithVision extends CommandBase {
     this.driveSpeed = driveSpeed;
     this.p = 0.015;
     this.d = 0.00127;
+    this.timeOut = timeOut;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -103,10 +105,10 @@ public class AimWithVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (driver == null) {
+    if (driver == null || timeOut) {
       // If vision target not acquired and we've exceeded the acquisition timeout, don't return
       // Because, that could mean we're shooting in the wrong direction!
-      if (!vision.isValidTarget() && currentTime - timeTargetFound > 500) {
+      if (!vision.isValidTarget() && currentTime - timeTargetFound > 2000) {
         vision.flashLight();
         return false;
       } else {

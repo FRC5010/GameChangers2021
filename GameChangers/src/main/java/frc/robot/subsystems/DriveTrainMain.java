@@ -84,7 +84,7 @@ public class DriveTrainMain extends SubsystemBase {
     rightMaster.set(throttle - steer);
   }
 
-  public double scaleInputs(double input) {
+  public static double scaleInputs(double input) {
     if (input > -.1 && input < .1) {
       return 0.0;
     }

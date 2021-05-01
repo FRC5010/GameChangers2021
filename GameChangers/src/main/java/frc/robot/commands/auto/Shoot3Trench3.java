@@ -27,17 +27,18 @@ public class Shoot3Trench3 extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new BeginningShoot3(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake, trench1),
-      
       new ParallelDeadlineGroup(
         trench1,
         new IntakeBalls(intake, 0.8)
-      )//,
-
-      // new ParallelDeadlineGroup(
-      //   Drive.getAutonomousCommand("paths/Trench2.wpilib.json", false)
-      // ),
+      ),
       
-      // new EndShootAuto(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake)
+
+      new ParallelDeadlineGroup(
+         Drive.getAutonomousCommand("paths/Trench2.wpilib.json", false),
+         new IntakeBalls(intake, 0.8)
+       ),
+      
+       new EndShootAuto(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake)
     );
   }
 }

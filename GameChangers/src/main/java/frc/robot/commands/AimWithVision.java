@@ -53,11 +53,12 @@ public class AimWithVision extends CommandBase {
     this.driver = null;
     this.targetAngle = targetAngle;
     this.driveSpeed = driveSpeed;
-    this.p = 0.015;
+    this.p = 0.007;
     this.d = 0.00127;
     this.timeOut = timeOut;
     addRequirements(drive);
-    addRequirements(vision);
+    SmartDashboard.putNumber("Aim w/ vision p", p);
+    SmartDashboard.putNumber("Aim w/ vision d", d);
   }
 
   // Called when the command is initially scheduled.

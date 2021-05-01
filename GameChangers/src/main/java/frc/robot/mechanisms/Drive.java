@@ -136,11 +136,11 @@ public class Drive {
 
     setCurrentLimits(ControlConstants.driveTrainCurrentLimit);
 
-    lEncoder.setPositionConversionFactor(DriveConstants.distancePerPulse);
-    rEncoder.setPositionConversionFactor(-DriveConstants.distancePerPulse);
+    // lEncoder.setPositionConversionFactor(DriveConstants.distancePerPulse);
+    // rEncoder.setPositionConversionFactor(-DriveConstants.distancePerPulse);
 
-    lEncoder.setVelocityConversionFactor(DriveConstants.distancePerPulse);
-    rEncoder.setVelocityConversionFactor(-DriveConstants.distancePerPulse);
+    // lEncoder.setVelocityConversionFactor(DriveConstants.distancePerPulse);
+    // rEncoder.setVelocityConversionFactor(-DriveConstants.distancePerPulse);
 
     robotPose = new Pose(lEncoder, rEncoder);
     shooterCam = shooterVision;

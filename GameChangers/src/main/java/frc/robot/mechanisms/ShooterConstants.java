@@ -22,6 +22,8 @@ public class ShooterConstants {
     public static double hoodD = hoodMax - 424;
     public static double hoodMaxDisplay = hoodMax;
     public static double hoodMove = 20;
+    public static double omnniSpeed = -1;
+    public static double hopperSpeed = -0.25;
 
     public static double rpmC = 7.5;//7.124;
     public static double rpmD = 1531;

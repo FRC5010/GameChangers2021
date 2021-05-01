@@ -36,7 +36,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
   private Boolean readyToShoot = false;
   private double flyWheelSetPoint = 0;
   private double hoodSetPoint = 1600;
-  private double constantRPM = 3500;
+  private double constantRPM = 3000;
 
   public FlyWheelSubsystem(CANSparkMax m1, CANSparkMax hood, CANPIDController m_pidController,
       VisionSystem visionSystem) {

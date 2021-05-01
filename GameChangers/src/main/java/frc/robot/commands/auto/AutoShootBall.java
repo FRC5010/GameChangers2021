@@ -5,6 +5,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.mechanisms.ShooterConstants;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
 import frc.robot.subsystems.VisionSystem;
@@ -37,8 +38,8 @@ public class AutoShootBall extends CommandBase {
 
     flyWheelSubsystem.determineIfReadyToShoot();
     if(flyWheelSubsystem.getReadyToShoot()){
-      hopperOmniSubsystem.SetOmniSpeed(-1);
-      hopperOmniSubsystem.SetHopperSpeed(-.45);
+      hopperOmniSubsystem.SetOmniSpeed(ShooterConstants.omnniSpeed);
+      hopperOmniSubsystem.SetHopperSpeed(ShooterConstants.hopperSpeed);
     }else{
       hopperOmniSubsystem.SetHopperSpeed(0);
       hopperOmniSubsystem.SetOmniSpeed(0);

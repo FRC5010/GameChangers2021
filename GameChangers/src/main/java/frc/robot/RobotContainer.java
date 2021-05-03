@@ -79,12 +79,12 @@ public class RobotContainer {
     // autoNavButton = new JoystickButton(driver, ControlConstants.autoNavButton);
     // autoNavButton.whenPressed(new DetermineGalacticPath(intakeVision,
     // IntakeMech.getIntakeSubsystem()));
-    command.setDefaultOption("test", new AutoTestPath(drive.getDriveTrainMain(), shooterVision,
-        flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
+    // command.setDefaultOption("test", new AutoTestPath(drive.getDriveTrainMain(), shooterVision,
+    //     flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
     command.addOption("Right Trench", new Shoot3Trench3(drive.getDriveTrainMain(), shooterVision,
         flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
-    command.addOption("Right RP", new Shoot3RpShoot2(drive.getDriveTrainMain(), shooterVision,
-        flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
+    // command.addOption("Right RP", new Shoot3RpShoot2(drive.getDriveTrainMain(), shooterVision,
+    //     flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
     command.addOption("Left RP", new LeftShoot3RP(drive.getDriveTrainMain(), shooterVision,
         flyWheelMech.getFlyWheelSubsystem(), flyWheelMech.getHopperOmniSubsystem(), intakeMech.getIntakeSubsystem()));
 

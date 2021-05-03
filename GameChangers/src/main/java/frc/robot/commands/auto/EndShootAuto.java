@@ -6,6 +6,7 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.AimWithGyro;
 import frc.robot.commands.AimWithVision;
 import frc.robot.commands.IntakeBalls;
 import frc.robot.commands.ShootBall;
@@ -30,7 +31,7 @@ public class EndShootAuto extends SequentialCommandGroup {
       new ParallelDeadlineGroup(
         new Timer(5000),
         new IntakeBalls(intake, 0.8),
-        new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0, false),
+        new AimWithGyro(driveTrain, visionSubsystem, 0.0, 0.0, false,driveTrain.getPose()),
         new ShootBall(flyWheel, hopperOmni, visionSubsystem)
       ),
       new StopFlyWheel(flyWheel)

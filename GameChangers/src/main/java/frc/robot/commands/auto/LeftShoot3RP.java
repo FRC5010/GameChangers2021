@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.IntakeBalls;
 import frc.robot.commands.RamseteFollower;
+import frc.robot.commands.StopFlyWheel;
 import frc.robot.mechanisms.Drive;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.FlyWheelSubsystem;
@@ -27,13 +28,8 @@ public class LeftShoot3RP extends SequentialCommandGroup {
     RamseteFollower initialPath = (RamseteFollower)Drive.getAutonomousCommand("paths/LeftRP1.wpilib.json",true);
     addCommands(
       new BeginningShoot3(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake, initialPath),
-
-      new ParallelDeadlineGroup(
-        initialPath,
-        new IntakeBalls(intake, 0.8)
-      ),
-
-      new EndShootAuto(driveTrain, visionSubsystem, flyWheel, hopperOmni, intake)
+      initialPath,
+      new StopFlyWheel(flyWheel)
     );
   }
 }

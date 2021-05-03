@@ -30,9 +30,12 @@ public class DriveTrainMain extends SubsystemBase {
   private SpeedController leftMaster;
   private SpeedController rightMaster;
 
+  Pose pose;
+
   public DriveTrainMain(SpeedController left, SpeedController right, Joystick driver, Pose pose) {
     leftMaster = left;
     rightMaster = right;
+    this.pose = pose;
 
     ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
       .getLayout("Driver", BuiltInLayouts.kList)
@@ -102,5 +105,9 @@ public class DriveTrainMain extends SubsystemBase {
   public void setMaxOutput(double maxOutput) {
     leftMaster.set(maxOutput);
     rightMaster.set(maxOutput);
+  }
+
+  public Pose getPose(){
+    return pose;
   }
 }

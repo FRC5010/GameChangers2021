@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -143,6 +145,7 @@ public class Drive {
     // rEncoder.setVelocityConversionFactor(-DriveConstants.distancePerPulse);
 
     robotPose = new Pose(lEncoder, rEncoder);
+    robotPose.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
     shooterCam = shooterVision;
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver, robotPose);
   }
@@ -175,5 +178,4 @@ public class Drive {
   public DriveTrainMain getDriveTrainMain() {
     return driveTrain;
   }
-
 }

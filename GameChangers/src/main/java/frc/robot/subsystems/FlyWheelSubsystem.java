@@ -36,7 +36,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
   private Boolean readyToShoot = false;
   private double flyWheelSetPoint = 0;
   private double hoodSetPoint = 1600;
-  private double constantRPM = 3000;
+  private double constantRPM = 4000;
 
   public FlyWheelSubsystem(CANSparkMax m1, CANSparkMax hood, CANPIDController m_pidController,
       VisionSystem visionSystem) {
@@ -156,6 +156,19 @@ public class FlyWheelSubsystem extends SubsystemBase {
   public void PIDHood() {
     hoodSetPoint = Math.max(ShooterConstants.hoodMin, hoodSetPoint);
     hoodSetPoint = Math.min(ShooterConstants.hoodMax, hoodSetPoint);
+    if (!readyToShoot) {
+      double potValue = hoodPot.getAverageValue();
+      double error = potValue - hoodSetPoint;
+      double power = 0.0015 * error;
+      power = Math.min(0.2, Math.max(-0.2, power));
+      hood.set(power);
+    } else {
+      hood.set(-0.01);
+    }
+  }
+
+  public void PIDHood(int hoodValue) {
+    hoodSetPoint = hoodValue;
     if (!readyToShoot) {
       double potValue = hoodPot.getAverageValue();
       double error = potValue - hoodSetPoint;

@@ -35,6 +35,7 @@ public class ControlConstants {
 
     public static int manualShootButton = ButtonNums.A_BUTTON.ordinal();
     public static int shooterAimButton = ButtonNums.B_BUTTON.ordinal();
+    public static int triangleShoot = ButtonNums.Y_BUTTON.ordinal();
     //public static int rotationControl = ButtonNums.X_BUTTON.ordinal();
     //public static int positionControl = ButtonNums.Y_BUTTON.ordinal();
     public static int startClimb = ButtonNums.LEFT_BUMPER.ordinal();

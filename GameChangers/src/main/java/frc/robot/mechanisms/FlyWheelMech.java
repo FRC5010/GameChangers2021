@@ -23,6 +23,7 @@ import frc.robot.commands.ShootBall;
 import frc.robot.commands.StopFlyWheel;
 import frc.robot.commands.ToggleHoodDown;
 import frc.robot.commands.ToggleHoodUp;
+import frc.robot.commands.TriangleHood;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.HopperOmniSubsystem;
 import frc.robot.subsystems.VisionSystem;
@@ -43,6 +44,7 @@ public class FlyWheelMech {
     private Joystick operator;
     private JoystickButton hoodUp;
     private JoystickButton hoodDown;
+    private JoystickButton triangleHoodAim;
     private JoystickButton launch;
     private JoystickButton manualLaunch;
     private JoystickButton calibrate;
@@ -56,6 +58,7 @@ public class FlyWheelMech {
     private void configurebuttonBindings(){
         hoodUp = new JoystickButton(operator, ControlConstants.hoodUp);
         hoodDown = new JoystickButton(operator, ControlConstants.hoodDown);
+        triangleHoodAim = new JoystickButton(driver, ControlConstants.triangleShoot);
         baseUp = new POVButton(operator, ControlConstants.incShooter);
         baseDown = new POVButton(operator, ControlConstants.decShooter);
         manualLaunch = new JoystickButton(driver, ControlConstants.manualShootButton);
@@ -68,6 +71,7 @@ public class FlyWheelMech {
 
         hoodUp.whenPressed(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whenPressed(new ToggleHoodDown(flyWheelSubsystem));
+        triangleHoodAim.whileHeld(new TriangleHood(flyWheelSubsystem));
         manualLaunch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
         launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
 

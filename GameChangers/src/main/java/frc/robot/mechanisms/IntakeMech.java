@@ -29,7 +29,7 @@ public class IntakeMech {
     public static double intakeMax = 0;
     public static double intakeMin = -65;
     public static double intakeFastMax = intakeMax - 10;
-    public static double intakeFastMin= intakeMin + 10;
+    public static double intakeFastMin= intakeMin + 5;
 
     public IntakeMech(Joystick operator, Joystick driver){
         this.driver = driver;

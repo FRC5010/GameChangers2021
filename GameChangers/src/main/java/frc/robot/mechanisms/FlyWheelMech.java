@@ -13,13 +13,16 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
+import frc.robot.commands.AimWithGyro;
 import frc.robot.commands.CameraCalibrateShooter;
 import frc.robot.commands.HopperOmni;
 import frc.robot.commands.ManualShootBall;
 import frc.robot.commands.ShootBall;
+import frc.robot.commands.StartFlyWheel;
 import frc.robot.commands.StopFlyWheel;
 import frc.robot.commands.ToggleHoodDown;
 import frc.robot.commands.ToggleHoodUp;
@@ -50,6 +53,7 @@ public class FlyWheelMech {
     private JoystickButton calibrate;
     private JoystickButton lightToggle;
     private JoystickButton stopFlyWheel;
+    private JoystickButton startFlywheel;
     private POVButton baseUp;
     private POVButton baseDown;
     private CANPIDController m_pidController;
@@ -67,20 +71,26 @@ public class FlyWheelMech {
         calibrate = new JoystickButton(driver, ControlConstants.calibrate);
         lightToggle = new JoystickButton(driver, ControlConstants.toggleLed);
 
-        stopFlyWheel = new JoystickButton(operator, ControlConstants.autoNavButton);
+        stopFlyWheel = new JoystickButton(operator, ControlConstants.stopFlywheel);
+        startFlywheel = new JoystickButton(operator, ControlConstants.startFlywheel);
+        
 
         hoodUp.whenPressed(new ToggleHoodUp(flyWheelSubsystem));
         hoodDown.whenPressed(new ToggleHoodDown(flyWheelSubsystem));
         triangleHoodAim.whileHeld(new TriangleHood(flyWheelSubsystem));
         manualLaunch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
-        launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
-
+        //launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
+        launch.whileHeld(new ParallelRaceGroup(
+            new AimWithGyro(Drive.driveTrain, vision, 0.0, 0.0, false, Drive.robotPose),
+            new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision)
+        ));
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed += 10));
         baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed -= 10));
         calibrate.whenPressed(new CameraCalibrateShooter(vision));
         lightToggle.whenPressed(new InstantCommand(() -> vision.setLight(!vision.isLightOn())));
 
         stopFlyWheel.whenPressed(new StopFlyWheel(flyWheelSubsystem));
+        startFlywheel.whenPressed(new StartFlyWheel(flyWheelSubsystem));
     }
 
     public FlyWheelMech(Joystick driver, Joystick operator, VisionSystem vision){

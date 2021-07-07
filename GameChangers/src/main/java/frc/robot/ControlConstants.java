@@ -62,6 +62,8 @@ public class ControlConstants {
     public static int hoodUp = ButtonNums.Y_BUTTON.ordinal(); 
     public static int intakeUpButton = ButtonNums.LEFT_BUMPER.ordinal();
     public static int intakeDownButton = ButtonNums.RIGHT_BUMPER.ordinal();
+    public static int startFlywheel = ButtonNums.LEFT_STICK_BUTT.ordinal();
+    public static int stopFlywheel = ButtonNums.RIGHT_STICK_BUTT.ordinal();
     
     public static int incShooter = POVDirs.UP.ordinal() * 90;
     public static int decShooter = POVDirs.DOWN.ordinal() * 90;

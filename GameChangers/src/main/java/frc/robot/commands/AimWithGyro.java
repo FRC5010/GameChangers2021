@@ -7,6 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ControlConstants;
+import frc.robot.mechanisms.Drive;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
 import frc.robot.subsystems.VisionSystem;
@@ -72,9 +74,13 @@ public class AimWithGyro extends CommandBase {
       SmartDashboard.putNumber("Correction", correction);
       //correction = Math.max(-d, Math.min(d, correction));
       //correction = Math.abs(correction);
-      drive.arcadeDrive(driveSpeed, correction);
+      drive.arcadeDrive(DriveTrainMain.scaleInputs(-Drive.driver.getRawAxis(ControlConstants.throttle)), correction);
       lastTime = currentTime;
       SmartDashboard.putNumber(vision.getName() + "VisionError", error);
+      if(Math.abs(error) < angleTolerance){
+        poseInit = pose.getHeading();
+        targetAngle = poseInit - vision.getAngleX();
+      }
     }
   }
 
@@ -92,9 +98,9 @@ public class AimWithGyro extends CommandBase {
       // Because, that could mean we're shooting in the wrong direction!
       if (!vision.isValidTarget() && currentTime - timeTargetFound > 2000) {
         vision.flashLight();
-        return false;
+        return true;
       } else {
-        return Math.abs(error) < angleTolerance;
+        return false;
       }
     } else {
       return false; 

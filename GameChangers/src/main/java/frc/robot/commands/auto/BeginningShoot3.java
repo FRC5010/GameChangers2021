@@ -32,7 +32,7 @@ public class BeginningShoot3 extends SequentialCommandGroup {
         new StartFlyWheel(flyWheel),
         new ParallelDeadlineGroup(
           new Timer(5000),
-          //new AimWithGyro(driveTrain, visionSubsystem, 0.0, 0.0, false, driveTrain.getPose()),
+          new AimWithGyro(driveTrain, visionSubsystem, 0.0, 0.0, false, driveTrain.getPose()),
           //uncomment AimWithGyro if need to do trench auto
           new AutoShootBall(flyWheel, hopperOmni, visionSubsystem),
           new AutoIntakeDown(intake))

@@ -20,10 +20,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,12 +29,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
 import frc.robot.Robot;
-import frc.robot.commands.AimWithVision;
+import frc.robot.commands.AimWithGyro;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.SwitchDriveDirection;
-import frc.robot.commands.auto.LeftShoot3RP;
-import frc.robot.commands.auto.Shoot3RpShoot2;
-import frc.robot.commands.auto.Shoot3Trench3;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
 import frc.robot.subsystems.VisionSystem;
@@ -50,7 +43,7 @@ public class Drive {
   public static DriveTrainMain driveTrain;
   private static VisionSystem shooterCam;
 
-  public Joystick driver;
+  public static Joystick driver;
   public static CANSparkMax lDrive1;
   public static CANSparkMax lDrive2;
 
@@ -82,7 +75,7 @@ public class Drive {
 
   private void configureButtonBindings() {
     shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
-    shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
+    shooterAimButton.whileHeld(new AimWithGyro(driveTrain, shooterCam, 0, 0, true, robotPose));
 
     incThrottleFactor = new POVButton(driver, ControlConstants.incThrottleFactor);
     incThrottleFactor.whenPressed(new InstantCommand(() -> DriveConstants.throttleFactor = Math.min(1,

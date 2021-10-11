@@ -10,6 +10,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -25,10 +26,12 @@ public class IntakeSubsystem extends SubsystemBase {
   private CANSparkMax m12;
   private CANPIDController pid;
   private CANEncoder intakeEncoder;
+  private Joystick operator;
 
-  public IntakeSubsystem(CANSparkMax m9, CANSparkMax m12) {
+  public IntakeSubsystem(CANSparkMax m9, CANSparkMax m12, Joystick operator) {
     this.m9 = m9;
     this.m12 = m12;
+    this.operator = operator;
     pid = m9.getPIDController();
     intakeEncoder = m9.getEncoder();
 
@@ -51,7 +54,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public double getIntakePosition(){
+  public double getIntakePosition() {
     return intakeEncoder.getPosition();
   }
 
@@ -67,22 +70,31 @@ public class IntakeSubsystem extends SubsystemBase {
     double finPow;
     // encoderVal <= IntakeMech.intakeFastMax && encoderVal >=
     // IntakeMech.intakeFastMin
+    Boolean override = operator.getRawButton(ControlConstants.overrideIntake);
 
     if (power > 0) {
-      if (encoderVal <= IntakeMech.intakeMax) {
-        error = Math.abs(encoderVal - IntakeMech.intakeMax);
-        finPow = encoderVal <= IntakeMech.intakeFastMax ? power : power * (error / 100);
-        m9.set(finPow);
+      if (override) {
+        m9.set(power);
       } else {
-        m9.set(0);
+        if (encoderVal <= IntakeMech.intakeMax) {
+          error = Math.abs(encoderVal - IntakeMech.intakeMax);
+          finPow = encoderVal <= IntakeMech.intakeFastMax ? power : power * (error / 100);
+          m9.set(finPow);
+        } else {
+          m9.set(0);
+        }
       }
     } else if (power < 0) {
-      if (encoderVal >= IntakeMech.intakeMin) {
-        error = Math.abs(encoderVal - IntakeMech.intakeMin);
-        finPow = encoderVal >= IntakeMech.intakeFastMin ? power : power * (error / 100);
-        m9.set(finPow);
+      if (override) {
+        m9.set(power);
       } else {
-        m9.set(0);
+        if (encoderVal >= IntakeMech.intakeMin) {
+          error = Math.abs(encoderVal - IntakeMech.intakeMin);
+          finPow = encoderVal >= IntakeMech.intakeFastMin ? power : power * (error / 100);
+          m9.set(finPow);
+        } else {
+          m9.set(0);
+        }
       }
     } else {
       m9.set(0);

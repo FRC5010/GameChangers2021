@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.mechanisms.ShooterConstants;
 import frc.robot.subsystems.FlyWheelSubsystem;
 
 public class TriangleHood extends CommandBase {
@@ -23,7 +24,9 @@ public class TriangleHood extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flyWheelSubsystem.PIDHood(1666);
+    flyWheelSubsystem.PIDHood(ShooterConstants.triShoot);
+    // 4 y button (manuel up) == 2014 on hood
+    //"4 y buttons from the bottom" -Riley on if the petentiometer breaks and we need to reset the hood value
   }
 
   // Called once the command ends or is interrupted.

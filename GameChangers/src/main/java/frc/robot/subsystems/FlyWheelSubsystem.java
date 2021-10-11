@@ -108,8 +108,10 @@ public class FlyWheelSubsystem extends SubsystemBase {
   public void aimAtDistance(double distance) {
     distance = Double.valueOf(distance).intValue();
     double rpm = ShooterConstants.rpmC * distance + ShooterConstants.rpmD;
-    spinUpWheelRPM(rpm);
+    constantRPM = rpm;
+    spinUpWheelRPM(rpm - 400);
     aimHood(distance);
+    constantRPM = 3000;
   }
 
   public void aimHood(double distance){
@@ -122,6 +124,7 @@ public class FlyWheelSubsystem extends SubsystemBase {
   public void spinUpWheelRPM() {
     pidController.setFF(ShooterConstants.kS / constantRPM + ShooterConstants.kV);
     pidController.setReference(constantRPM, ControlType.kVelocity);
+  
   }
 
   public void spinUpWheelRPM(double setPoint) {

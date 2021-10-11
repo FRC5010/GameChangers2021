@@ -50,7 +50,7 @@ public class IntakeMech {
         m11.setSmartCurrentLimit(40);
         intakeMotor.setSmartCurrentLimit(40);
 
-        intakeSubsystem = new IntakeSubsystem(m9, intakeMotor);
+        intakeSubsystem = new IntakeSubsystem(m9, intakeMotor, operator);
 
         intakeSubsystem.setDefaultCommand(new IntakeBalls(intakeSubsystem, operator));
 

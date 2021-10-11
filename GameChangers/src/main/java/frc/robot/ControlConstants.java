@@ -35,7 +35,7 @@ public class ControlConstants {
 
     public static int manualShootButton = ButtonNums.A_BUTTON.ordinal();
     public static int shooterAimButton = ButtonNums.B_BUTTON.ordinal();
-    public static int triangleShoot = ButtonNums.Y_BUTTON.ordinal();
+    public static int triangleShoot = ButtonNums.RIGHT_BUMPER.ordinal();
     //public static int rotationControl = ButtonNums.X_BUTTON.ordinal();
     //public static int positionControl = ButtonNums.Y_BUTTON.ordinal();
     public static int startClimb = ButtonNums.LEFT_BUMPER.ordinal();
@@ -64,7 +64,8 @@ public class ControlConstants {
     public static int intakeDownButton = ButtonNums.RIGHT_BUMPER.ordinal();
     public static int startFlywheel = ButtonNums.LEFT_STICK_BUTT.ordinal();
     public static int stopFlywheel = ButtonNums.RIGHT_STICK_BUTT.ordinal();
-    
+    public static int overrideIntake = ButtonNums.START_BUTTON.ordinal();
+
     public static int incShooter = POVDirs.UP.ordinal() * 90;
     public static int decShooter = POVDirs.DOWN.ordinal() * 90;
     public static int spinnerOverrideButtonLow = POVDirs.RIGHT.ordinal() * 90;

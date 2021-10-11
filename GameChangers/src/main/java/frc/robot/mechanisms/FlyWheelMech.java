@@ -79,11 +79,12 @@ public class FlyWheelMech {
         hoodDown.whenPressed(new ToggleHoodDown(flyWheelSubsystem));
         triangleHoodAim.whileHeld(new TriangleHood(flyWheelSubsystem));
         manualLaunch.whileHeld(new ManualShootBall(flyWheelSubsystem, hopperOmniSubsystem));
-        //launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
-        launch.whileHeld(new ParallelRaceGroup(
+        launch.whileHeld(new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision));
+        /*launch.whileHeld(new ParallelRaceGroup(
             new AimWithGyro(Drive.driveTrain, vision, 0.0, 0.0, false, Drive.robotPose),
             new ShootBall(flyWheelSubsystem, hopperOmniSubsystem, vision)
         ));
+        */
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed += 10));
         baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed -= 10));
         calibrate.whenPressed(new CameraCalibrateShooter(vision));

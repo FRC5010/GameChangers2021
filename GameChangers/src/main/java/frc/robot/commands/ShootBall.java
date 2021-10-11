@@ -42,6 +42,7 @@ public class ShootBall extends CommandBase {
 
     distance = visionSystem.getDistance();
     flyWheelSubsystem.aimAtDistance(distance);
+    flyWheelSubsystem.spinUpWheelRPM();
 
     flyWheelSubsystem.determineIfReadyToShoot();
     if(flyWheelSubsystem.getReadyToShoot()){
